@@ -1,0 +1,31 @@
+context:
+  listener:
+    classes:com.snail.web.listener.ApplicationEventListener
+spring:
+  application:
+    name: wistron-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.79.39.252:3306/snail?useUnicode=true&autoReconnect=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Lzy#2719045
+  devtools:
+    restart:
+      enabled: true
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    - classpath:mapper/*.xml
+  type-aliases-package: com.snail.web.entity
+
+server:
+  port: 9080
+
+fileUpload:
+  upload-base-path: /data/upload-file/guangmei
+  file-url: /group1/M11
+  service-url: http://kf.vpclub.cn/
+  token: ae3efd91921042ea88abe815aa33896d
+
+
