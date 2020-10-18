@@ -1,15 +1,13 @@
 package com.snail.web;
 
-import com.baomidou.mybatisplus.annotations.DataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@MapperScan("com.snail.web.mapper")
+@MapperScan("com.snail.web.modules.*.mapper")
 @SpringBootApplication
 @EnableTransactionManagement
 public class SnailWebServiceApplication {
