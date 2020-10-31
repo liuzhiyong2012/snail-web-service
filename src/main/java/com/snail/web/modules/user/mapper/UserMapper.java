@@ -20,4 +20,7 @@ public interface UserMapper extends BaseMapper<User> {
     public Integer count(UserRequest userRequest);
 
     public List<UserReponse> page(UserRequest userRequest);
+
+    public UserReponse autoLogin(UserRequest userRequest);
+
 }

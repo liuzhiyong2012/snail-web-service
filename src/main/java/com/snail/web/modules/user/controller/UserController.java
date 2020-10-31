@@ -7,6 +7,7 @@ import com.snail.web.entity.PageBaseResponse;
 import com.snail.web.modules.user.dto.entity.User;
 import com.snail.web.modules.user.dto.request.UserRequest;
 import com.snail.web.modules.user.service.IUserService;
+import com.snail.web.utils.AliyunSmsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +22,12 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private AliyunSmsUtils aliyunSmsUtils;
+
     @PostMapping("/login")
     public BaseResponse login(@RequestBody User user) {
-
+        aliyunSmsUtils.sendMessage("13580415609","2345");
         return userService.login(user);
     }
 
@@ -53,5 +57,11 @@ public class UserController {
     public BaseResponse deleteById(@RequestBody UserRequest userRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return userService.deleteById(userRequest, userId);
+    }
+
+    @PostMapping("/autoLogin")
+    public BaseResponse autoLogin(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+        String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
+        return userService.autoLogin(userRequest);
     }
 }

@@ -26,6 +26,8 @@ public interface IUserService extends IService<User> {
     public PageBaseResponse page(UserRequest userService, String userId);
 
     public BaseResponse deleteById(UserRequest user,String userId);
+
+    public BaseResponse autoLogin(UserRequest user);
 }
 
 

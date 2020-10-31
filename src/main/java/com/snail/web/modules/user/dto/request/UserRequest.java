@@ -17,6 +17,7 @@ public class UserRequest extends BaseRequest {
     private String phone;
     private String email;
     private String sex;
+    private String token;
 
 
 

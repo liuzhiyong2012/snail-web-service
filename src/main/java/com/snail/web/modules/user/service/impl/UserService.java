@@ -10,6 +10,7 @@ import com.snail.web.modules.user.dto.entity.User;
 import com.snail.web.modules.user.dto.request.UserRequest;
 import com.snail.web.modules.user.dto.response.UserReponse;
 import com.snail.web.modules.user.mapper.UserMapper;
+import com.snail.web.modules.user.service.ILoginService;
 import com.snail.web.modules.user.service.IUserService;
 import com.snail.web.utils.RequestUtils;
 import com.snail.web.utils.ResponseUtils;
@@ -33,6 +34,9 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ILoginService loginService;
 
     @Autowired
     private IUserService userService;
@@ -137,6 +141,8 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         if (!users.get(0).getPassword().equals(user.getPassword())) {
             return ResponseUtils.errorMsg("密码错误");
         }
+
+
 //        HashMap<String, String> map = new HashMap<>();
 //        map.put("id",users.get(0).getId());
 //        List<String> list = EncryptUtils.genKeyPair();
@@ -146,11 +152,15 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 //        String token = IdWorker.get32UUID();
 //        returnMap.put("token",token);
 //        returnMap.
-        String token = RequestUtils.getToken(users.get(0).getId()+"",users.get(0).getPassword());
+        User retUser = users.get(0);
+        String token = RequestUtils.getToken(retUser.getId()+"",retUser.getPassword());
+        loginService.insert(retUser,token);
         Map<String,String> map = new HashMap<>();
         map.put("token",token);
-        map.put("userName",users.get(0).getNickname());
-      // RedisUtils.saveUserToken(redisTemplate,token,users.get(0).getId());
+        map.put("nickName",retUser.getNickname());
+        map.put("userId",retUser.getId());
+        map.put("phone",retUser.getPhone());
+        /*RedisUtils.saveUserToken(redisTemplate,token,users.get(0).getId());*/
         return ResponseUtils.convert(map);
     }
 
@@ -184,4 +194,27 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         this.delete(wrapper);
         return ResponseUtils.success();
     }
+
+    @Override
+    public BaseResponse autoLogin(UserRequest user) {
+        UserReponse  userReponse =  this.baseMapper.autoLogin(user);
+        String errMessage;
+        if(userReponse == null){
+            errMessage="id不能为空";
+            return ResponseUtils.errorMsg(errMessage);
+        }
+
+        long nowTime = System.currentTimeMillis();
+        if(nowTime - userReponse.getUpdatedTime().getTime() >1000 * 60 * 60)
+        {
+            errMessage="token已过期";
+            return ResponseUtils.errorMsg(errMessage);
+        }
+
+        return ResponseUtils.convert(userReponse);
+
+
+    }
+
+
 }

@@ -33,4 +33,13 @@
         </if>
         limit #{start},#{pageSize}
     </select>
+
+    <select id="autoLogin" resultType="com.snail.web.modules.user.dto.response.UserReponse">
+        select user.id,user.phone, login.token,login.updated_time as updatedTime from  `login`
+        left join `user` on user.id = login.user_id
+        where 1 = 1
+        <if test = "token != null">
+        and login.token = #{token}
+        </if>
+    </select>
 </mapper>
