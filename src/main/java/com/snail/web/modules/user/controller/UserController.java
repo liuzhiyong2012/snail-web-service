@@ -25,10 +25,22 @@ public class UserController {
     @Autowired
     private AliyunSmsUtils aliyunSmsUtils;
 
-    @PostMapping("/login")
+    public static boolean open = true;
+
+    @PostMapping("/login111")
     public BaseResponse login(@RequestBody User user) {
         aliyunSmsUtils.sendMessage("13580415609","2345");
         return userService.login(user);
+    }
+
+    @PostMapping("/login")
+    public Object changeStatus(@RequestBody User user) {
+        if(open){
+            open = false;
+        }else{
+            open = true;
+        }
+        return new User();
     }
 
     @Auth

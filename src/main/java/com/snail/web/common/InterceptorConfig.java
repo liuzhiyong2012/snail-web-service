@@ -8,15 +8,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
-    @Autowired
-    private CheckLoginAspect checkLoginAspect;
+  /*  @Autowired
+    private CheckLoginAspect checkLoginAspect;*/
+
     @Autowired
     private CheckOutAspect checkOutAspect;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(checkLoginAspect).addPathPatterns("/**");
-        registry.addInterceptor(checkOutAspect).addPathPatterns("/**");
+      /*  registry.addInterceptor(checkLoginAspect).addPathPatterns("/**");
+        registry.addInterceptor(checkOutAspect).addPathPatterns("/**");*/
         super.addInterceptors(registry);
     }
 }

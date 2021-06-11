@@ -12,7 +12,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Component
+/*@Component*/
+//
 public class CheckLoginAspect implements HandlerInterceptor {
 //    private final static Logger logger = Logger.getLogger(CheckLoginAspect.class);
     @Autowired
@@ -39,6 +39,10 @@ public class CheckLoginAspect implements HandlerInterceptor {
         response.setCharacterEncoding("utf-8");
         request.setCharacterEncoding("utf-8");
         response.setContentType("application/json; charset=utf-8");
+        int a = 123;
+        if(a == 123){
+            return true;
+        }
 
 
         if (clazz.isAnnotationPresent(Auth.class) || method.isAnnotationPresent(Auth.class)) {
@@ -113,12 +117,12 @@ public class CheckLoginAspect implements HandlerInterceptor {
         return true;
     }
 
-    @Override
+//    @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
 
     }
 
-    @Override
+//    @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
 
     }

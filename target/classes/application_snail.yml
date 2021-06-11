@@ -1,0 +1,52 @@
+context:
+  listener:
+    classes:com.snail.web.listener.ApplicationEventListener
+spring:
+  redis:
+    database: 0  # Redis数据库索引（默认为0）
+    host: 120.79.39.252 # Redis服务器地址
+    port: 6384  # Redis服务器连接端口
+    lettuce:
+      pool:
+        max-active: 8  # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-wait: -1   # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-idle: 8    # 连接池中的最大空闲连接 默认 8
+        min-idle: 0    # 连接池中的最小空闲连接 默认 0
+  application:
+    name: wistron-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.79.39.252:3306/snail?useUnicode=true&autoReconnect=true&characterEncoding=utf8&useSSL=false
+    username: snail
+    password: snail
+  devtools:
+    restart:
+      enabled: true
+  http:
+    multipart:
+      max-request-size:500Mb
+      max-file-size:500Mb
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations:
+    - classpath:mapper/*.xml
+  type-aliases-package: com.snail.web.modules.*.dto.entity
+
+server:
+  port: 9080
+
+fileUpload:
+  upload-base-path:  d://project/snail-web-service/img
+  file-url: /group1/M11
+  service-url: http://kf.vpclub.cn/
+  token: ae3efd91921042ea88abe815aa33896d
+
+aliyun:
+  accessKeyId: LTAI4G5K2ZyxgKQoBrG8p7qN
+  accessSecret: bKB3WlQd72rsyf1YRsrlIOnwCtO2lj
+  signName: 蜗牛网
+  templateCode: SMS_205135911
+
+
