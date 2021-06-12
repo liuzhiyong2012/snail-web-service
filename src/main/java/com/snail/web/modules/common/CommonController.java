@@ -1,6 +1,6 @@
 package com.snail.web.modules.common;
 
-import com.snail.web.entity.BaseResponse;
+import com.snail.web.dto.BaseResponse;
 import com.snail.web.utils.FileUploadUtils;
 import com.snail.web.utils.ResponseUtils;
 import org.springframework.web.bind.annotation.PostMapping;

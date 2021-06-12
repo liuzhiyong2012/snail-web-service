@@ -1,8 +1,8 @@
 package com.snail.web.utils;
 
 
-import com.snail.web.entity.BaseResponse;
-import com.snail.web.entity.PageBaseResponse;
+import com.snail.web.dto.BaseResponse;
+import com.snail.web.dto.PageBaseResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;

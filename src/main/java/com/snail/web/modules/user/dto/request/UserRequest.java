@@ -11,20 +11,25 @@ import org.apache.commons.lang.StringUtils;
 @Data
 @ToString
 public class UserRequest extends BaseRequest {
-    private String id;
-    private String nickname;
+
+//    private Integer pageNumber;
+//    private Integer pageSize;
+    private String username;
     private String password;
-    private String phone;
-    private String email;
-    private String sex;
-    private String token;
-
-
+    private String roleId;
+    private String id;
+    private String name;
 
     public String   validDate(){
         String err="";
-        if(StringUtils.isEmpty(phone)){
-            err="手机号不能为空";
+        if(StringUtils.isEmpty(username)){
+            err="用户名不能为空";
+        }
+//        if(StringUtils.isEmpty(password)){
+//            err="密码不能为空";
+//        }
+        if(StringUtils.isEmpty(roleId)){
+            err="角色不能为空";
         }
         return err;
     }

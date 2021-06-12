@@ -3,9 +3,9 @@ package com.snail.web.common;
 
 import com.snail.web.common.anno.Auth;
 import com.snail.web.constants.BaseConstant;
-import com.snail.web.entity.TokenParam;
+import com.snail.web.dto.TokenParam;
 import com.snail.web.modules.user.dto.entity.User;
-import com.snail.web.modules.user.service.IUserService;
+import com.snail.web.modules.user.service.UserService;
 import com.snail.web.utils.RequestUtils;
 import com.snail.web.utils.StringUtils;
 import net.sf.json.JSONObject;
@@ -27,7 +27,7 @@ import java.util.*;
 public class CheckLoginAspect implements HandlerInterceptor {
 //    private final static Logger logger = Logger.getLogger(CheckLoginAspect.class);
     @Autowired
-    private IUserService userService;
+    private UserService userService;
     private RedisTemplate redisTemplate;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

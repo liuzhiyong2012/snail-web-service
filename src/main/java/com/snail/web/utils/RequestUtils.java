@@ -2,7 +2,7 @@ package com.snail.web.utils;
 
 
 import com.snail.web.constants.BaseConstant;
-import com.snail.web.entity.TokenParam;
+import com.snail.web.dto.TokenParam;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 

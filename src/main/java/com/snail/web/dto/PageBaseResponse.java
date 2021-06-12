@@ -1,4 +1,4 @@
-package com.snail.web.entity;
+package com.snail.web.dto;
 
 
 import java.io.Serializable;
