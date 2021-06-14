@@ -33,7 +33,7 @@ public class CrawlerConfigure {
 						.classpath("com.snail.web.modules.crawler.spider.news")
 						.seed("http://www.weishangshijie.cn/news/",
 								"http://www.weishangshijie.cn/news_2/")
-						.interval(3000)
+						.interval(30000)
 						.debug(true)
 						.loop(true)
 						.start();

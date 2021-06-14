@@ -8,8 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * @author Holinc
+ */
 @Service
 public class INewsService implements NewsService {
 	@Autowired
@@ -17,6 +22,16 @@ public class INewsService implements NewsService {
 
 	@Override
 	public void saveNewsDetail(NewsDetail newsDetail) {
+		if (null == newsDetail) {
+			return;
+		}
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("title", newsDetail.getTitle());
+		List<News> newsInDb = newsMapper.selectByMap(queryMap);
+		if (newsInDb.isEmpty()) {
+			//已存在，跳过
+			return;
+		}
 		News news = new News();
 		BeanUtils.copyProperties(newsDetail, news);
 		newsMapper.insert(news);

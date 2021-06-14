@@ -42,6 +42,10 @@ public class NewsDetail implements HtmlBean {
 	@HtmlField(cssPath = ".daoyu")
 	private String summary;
 
+
+	@HtmlField(cssPath = ".content > div.nzlist_l > div.news_list > ul > li:nth-child(1) > div.h_l")
+	private String imageUrl;
+
 	/**
 	 * 正文
 	 */
