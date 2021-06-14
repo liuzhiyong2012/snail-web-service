@@ -11,15 +11,15 @@ import com.snail.web.modules.user.dto.request.UserRoleRequest;
  * Created by Mei on 2019/7/22.
  */
 public interface UserRoleService extends IService<UserRole> {
-    public PageBaseResponse getPage(UserRoleRequest ur);
+     PageBaseResponse getPage(UserRoleRequest ur);
 
-    public PageBaseResponse getAll(UserRoleRequest ur);
+     PageBaseResponse getAll(UserRoleRequest ur);
 
-    public BaseResponse insertData(UserRole ur, String userId);
+     BaseResponse insertData(UserRole ur, String userId);
 
-    public BaseResponse getUserByWeight(String userId);
+     BaseResponse getUserByWeight(String userId);
 
-    public BaseResponse update(UserRoleRequest ur, String userId);
+     BaseResponse update(UserRoleRequest ur, String userId);
 
-    public BaseResponse deleteById(UserRoleRequest ur, String userId);
+     BaseResponse deleteById(UserRoleRequest ur, String userId);
 }

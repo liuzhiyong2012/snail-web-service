@@ -1,4 +1,4 @@
-package com.snail.web.modules.user.dto.request;
+package com.snail.web.modules.frontuser.dto.request;
 
 import com.snail.web.dto.BaseRequest;
 import lombok.Data;
@@ -10,12 +10,14 @@ import org.apache.commons.lang.StringUtils;
  */
 @Data
 @ToString
-public class UserRequest extends BaseRequest {
+public class FrontUserRequest extends BaseRequest {
+
+//    private Integer pageNumber;
+//    private Integer pageSize;
     private String username;
-    private String password;
-    private String roleId;
     private String id;
     private String name;
+    private String phone;
 
     public String   validDate(){
         String err="";
@@ -23,9 +25,6 @@ public class UserRequest extends BaseRequest {
             err="用户名不能为空";
         }
 
-        if(StringUtils.isEmpty(roleId)){
-            err="角色不能为空";
-        }
         return err;
     }
 }
