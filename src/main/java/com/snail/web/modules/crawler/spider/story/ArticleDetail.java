@@ -1,5 +1,6 @@
-package com.snail.web.modules.crawler.spider.news;
+package com.snail.web.modules.crawler.spider.story;
 
+import com.geccocrawler.gecco.GeccoEngine;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
@@ -7,8 +8,8 @@ import com.geccocrawler.gecco.spider.HtmlBean;
 import java.time.LocalDateTime;
 
 @Gecco(matchUrl = "http://www.weishangshijie.cn/{subType}/{page}.html",
-		pipelines = "newsDetailPipelineAAA", timeout = 1000)
-public class NewsDetail implements HtmlBean {
+		pipelines = "articleDetailPipeline", timeout = 1000)
+public class ArticleDetail implements HtmlBean {
 
 	@Request
 	private HttpRequest request;
@@ -27,15 +28,10 @@ public class NewsDetail implements HtmlBean {
 	private String title;
 
 	/**
-	 * 文章来源及时间
+	 * 文章来源
 	 */
 	@Text
 	@HtmlField(cssPath = ".content .foot_content_laiy")
-	private String sourceText;
-
-	/**
-	 * 文章来源
-	 */
 	private String source;
 
 	/**
@@ -101,14 +97,6 @@ public class NewsDetail implements HtmlBean {
 		this.title = title;
 	}
 
-	public String getSourceText() {
-		return sourceText;
-	}
-
-	public void setSourceText(String sourceText) {
-		this.sourceText = sourceText;
-	}
-
 	public String getSource() {
 		return source;
 	}
@@ -155,6 +143,15 @@ public class NewsDetail implements HtmlBean {
 
 	public void setRawContent(String rawContent) {
 		this.rawContent = rawContent;
+	}
+
+	public static void main(String[] args) {
+		GeccoEngine.create()
+				.classpath("com.geccocrawler.gecco.demo.sina")
+				.seed("http://www.weishangshijie.cn/newsp/254733.html")
+				.seed("http://www.weishangshijie.cn/wsdr/254759.html")
+				.debug(true)
+				.start();
 	}
 
 }

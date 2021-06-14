@@ -4,6 +4,7 @@ import com.snail.web.modules.crawler.dto.entity.News;
 import com.snail.web.modules.crawler.mapper.NewsMapper;
 import com.snail.web.modules.crawler.service.NewsService;
 import com.snail.web.modules.crawler.spider.news.NewsDetail;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class INewsService implements NewsService {
 		Map<String, Object> queryMap = new HashMap<>();
 		queryMap.put("title", newsDetail.getTitle());
 		List<News> newsInDb = newsMapper.selectByMap(queryMap);
-		if (newsInDb.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(newsInDb)) {
 			//已存在，跳过
 			return;
 		}

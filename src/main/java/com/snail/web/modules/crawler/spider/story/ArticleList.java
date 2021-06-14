@@ -1,4 +1,4 @@
-package com.snail.web.modules.crawler.spider.news;
+package com.snail.web.modules.crawler.spider.story;
 
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
@@ -9,18 +9,22 @@ import java.util.List;
 /**
  * @author Holinc
  */
-@Gecco(matchUrl = {"http://www.weishangshijie.cn/news/", "http://www.weishangshijie.cn/news_{page}/"},
-		pipelines = "newsListPipelineAAA")
-public class NewsList implements HtmlBean {
+@Gecco(matchUrl = {"http://www.weishangshijie.cn/{subArticleType}/",
+		"http://www.weishangshijie.cn/{subArticleType}_{page}/"},
+		pipelines = "consolePipeline")
+public class ArticleList implements HtmlBean {
 
 	@Request
 	private HttpRequest request;
+
+	@RequestParameter(value = "subArticleType")
+	private String subArticleType;
 
 	@RequestParameter(value = "page")
 	private Integer page;
 
 	@HtmlField(cssPath = "body > div.content > div.nzlist_l > div.news_list > ul > li")
-	private List<Item> newsList;
+	private List<Item> articleList;
 
 	public HttpRequest getRequest() {
 		return request;
@@ -28,6 +32,22 @@ public class NewsList implements HtmlBean {
 
 	public void setRequest(HttpRequest request) {
 		this.request = request;
+	}
+
+	public String getSubArticleType() {
+		return subArticleType;
+	}
+
+	public void setSubArticleType(String subArticleType) {
+		this.subArticleType = subArticleType;
+	}
+
+	public List<Item> getArticleList() {
+		return articleList;
+	}
+
+	public void setArticleList(List<Item> articleList) {
+		this.articleList = articleList;
 	}
 
 	public Integer getPage() {
@@ -38,13 +58,6 @@ public class NewsList implements HtmlBean {
 		this.page = page;
 	}
 
-	public List<Item> getNewsList() {
-		return newsList;
-	}
-
-	public void setNewsList(List<Item> newsList) {
-		this.newsList = newsList;
-	}
 
 	public static class Item implements HtmlBean {
 
