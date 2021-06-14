@@ -2,7 +2,9 @@ package com.snail.web.modules.frontuser.controller;
 
 
 import com.snail.web.constants.BaseConstant;
+import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
+import com.snail.web.modules.frontuser.dto.entity.FrontUser;
 import com.snail.web.modules.frontuser.dto.request.FrontUserRequest;
 import com.snail.web.modules.frontuser.service.FrontUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,10 @@ public class FrontUserController {
     @Autowired
     private FrontUserService frontUserService;
 
-   /* @PostMapping("/login")
-    public BaseResponse login(@RequestBody User user) {
-
-        return userService.login(user);
-    }*/
+    @PostMapping("/login")
+    public BaseResponse login(@RequestBody FrontUser frontUser) {
+        return frontUserService.login(frontUser);
+    }
 
 //    @Auth
     @PostMapping("/page")
@@ -36,13 +37,13 @@ public class FrontUserController {
         return frontUserService.page(frontUserRequest, userId);
     }
 
- /*   @Auth
+/*   @Auth*/
     @PostMapping("/insert")
-    public BaseResponse insert(@RequestBody UserRequest userRequest, HttpServletRequest request){
+    public BaseResponse insert(@RequestBody FrontUserRequest frontUserRequest, HttpServletRequest request){
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return userService.insert(userRequest, userId);
+        return frontUserService.insert(frontUserRequest, userId);
     }
-
+ /*
     @Auth
     @PostMapping("/update")
     public BaseResponse update(@RequestBody UserRequest userRequest, HttpServletRequest request) {

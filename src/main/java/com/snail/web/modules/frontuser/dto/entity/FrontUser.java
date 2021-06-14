@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -39,5 +40,15 @@ public class FrontUser implements Serializable {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	@TableField("updated_time")
 	private Date updatedTime;
+
+	public String   validDate(){
+		String err="";
+		if(StringUtils.isEmpty(username)){
+			err="用户名不能为空";
+		}
+
+
+		return err;
+	}
 
 }

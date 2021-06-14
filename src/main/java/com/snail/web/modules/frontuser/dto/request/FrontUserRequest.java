@@ -14,10 +14,13 @@ public class FrontUserRequest extends BaseRequest {
 
 //    private Integer pageNumber;
 //    private Integer pageSize;
-    private String username;
     private String id;
+    private String username;
+    private String password;
     private String name;
     private String phone;
+    private String email;
+    private String roleType;
 
     public String   validDate(){
         String err="";
