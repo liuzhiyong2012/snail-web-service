@@ -42,4 +42,5 @@
         and login.token = #{token}
         </if>
     </select>
+
 </mapper>
