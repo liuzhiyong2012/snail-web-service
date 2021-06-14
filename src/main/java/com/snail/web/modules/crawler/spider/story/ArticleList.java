@@ -10,8 +10,7 @@ import java.util.List;
  * @author Holinc
  */
 @Gecco(matchUrl = {"http://www.weishangshijie.cn/{subArticleType}/",
-		"http://www.weishangshijie.cn/{subArticleType}_{page}/"},
-		pipelines = "consolePipeline")
+		"http://www.weishangshijie.cn/{subArticleType}_{page}/"})
 public class ArticleList implements HtmlBean {
 
 	@Request

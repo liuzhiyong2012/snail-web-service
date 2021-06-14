@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 /**
  * @author Holinc
  */
-@PipelineName("articleDetailPipeline")
 public class ArticleDetailPipeline implements Pipeline<ArticleDetail> {
 
 	private static final Logger log = LoggerFactory.getLogger(ArticleDetailPipeline.class);
