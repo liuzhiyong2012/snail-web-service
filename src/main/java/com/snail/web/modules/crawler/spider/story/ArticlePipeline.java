@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * @author Holinc
  */
@@ -32,13 +35,13 @@ public class ArticlePipeline implements Pipeline<ArticleSpider> {
 			//sample
 			//http://www.weishangshijie.cn/wkeyuan/
 			bean.getSubTypes().forEach(item -> {
-				String url = item.getUrl();
-				if (url.endsWith("/")) {
-					url = url.substring(0, url.length() - 1);
+				URI uri;
+				try {
+					uri = new URI(item.getUrl());
+					item.setCode(uri.getPath().replace("/", ""));
+				} catch (URISyntaxException e) {
+					item.setCode(null);
 				}
-				int codeIndex = url.lastIndexOf("/");
-				String code = url.substring(codeIndex + 1);
-				item.setCode(code);
 			});
 		}
 	}

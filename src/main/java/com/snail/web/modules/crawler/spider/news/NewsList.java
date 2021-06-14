@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * @author Holinc
  */
-@Gecco(matchUrl = {"http://www.weishangshijie.cn/news/", "http://www.weishangshijie.cn/news_{page}/"},
-		pipelines = "newsListPipelineAAA")
+//@Gecco(matchUrl = {"http://www.weishangshijie.cn/news/", "http://www.weishangshijie.cn/news_{page}/"},
+//		pipelines = "newsListPipelineAAA")
 public class NewsList implements HtmlBean {
 
 	@Request

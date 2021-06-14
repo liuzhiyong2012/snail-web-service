@@ -6,8 +6,8 @@ import com.geccocrawler.gecco.spider.HtmlBean;
 
 import java.time.LocalDateTime;
 
-@Gecco(matchUrl = "http://www.weishangshijie.cn/{subType}/{page}.html",
-		pipelines = "newsDetailPipelineAAA", timeout = 1000)
+//@Gecco(matchUrl = "http://www.weishangshijie.cn/{subType}/{page}.html",
+//		pipelines = "newsDetailPipelineAAA", timeout = 1000)
 public class NewsDetail implements HtmlBean {
 
 	@Request

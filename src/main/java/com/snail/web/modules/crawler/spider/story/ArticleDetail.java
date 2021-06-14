@@ -28,10 +28,15 @@ public class ArticleDetail implements HtmlBean {
 	private String title;
 
 	/**
-	 * 文章来源
+	 * 文章来源及时间
 	 */
 	@Text
 	@HtmlField(cssPath = ".content .foot_content_laiy")
+	private String sourceText;
+
+	/**
+	 * 文章来源
+	 */
 	private String source;
 
 	/**
@@ -97,6 +102,14 @@ public class ArticleDetail implements HtmlBean {
 		this.title = title;
 	}
 
+	public String getSourceText() {
+		return sourceText;
+	}
+
+	public void setSourceText(String sourceText) {
+		this.sourceText = sourceText;
+	}
+
 	public String getSource() {
 		return source;
 	}
@@ -143,15 +156,6 @@ public class ArticleDetail implements HtmlBean {
 
 	public void setRawContent(String rawContent) {
 		this.rawContent = rawContent;
-	}
-
-	public static void main(String[] args) {
-		GeccoEngine.create()
-				.classpath("com.geccocrawler.gecco.demo.sina")
-				.seed("http://www.weishangshijie.cn/newsp/254733.html")
-				.seed("http://www.weishangshijie.cn/wsdr/254759.html")
-				.debug(true)
-				.start();
 	}
 
 }

@@ -41,9 +41,9 @@ public class CrawlerConfigure {
 						.seed("http://www.weishangshijie.cn/news/")
 						.seed("http://www.weishangshijie.cn/duanzi/")
 						.seed("http://www.weishangshijie.cn/xueyuan/")
-						.thread(3)
+//						.thread(3)
 						.interval(3000)
-						.debug(true)
+//						.debug(true)
 						.loop(true)
 						.start();
 			}

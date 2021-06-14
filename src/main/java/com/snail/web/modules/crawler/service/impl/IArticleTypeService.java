@@ -1,5 +1,6 @@
 package com.snail.web.modules.crawler.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.snail.web.modules.crawler.dto.entity.ArticleType;
 import com.snail.web.modules.crawler.mapper.ArticleTypeMapper;
 import com.snail.web.modules.crawler.service.ArticleTypeService;
@@ -7,10 +8,6 @@ import com.snail.web.modules.crawler.spider.story.ArticleSpider;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Holinc
@@ -26,25 +23,39 @@ public class IArticleTypeService implements ArticleTypeService {
 			return;
 		}
 		articleSpider.getSubTypes().forEach(item -> {
-			Map<String, Object> queryMap = new HashMap<>();
-			queryMap.put("code", item.getCode());
-			List<ArticleType> articleTypeInDb = articleTypeMapper.selectByMap(queryMap);
-			if (CollectionUtils.isNotEmpty(articleTypeInDb)) {
+			ArticleType queryParam = new ArticleType();
+			queryParam.setCode(item.getCode());
+			ArticleType articleTypeInDb = articleTypeMapper.selectOne(queryParam);
+			if (null != articleTypeInDb) {
 				//已存在，则更新
-				ArticleType articleType = articleTypeInDb.get(0);
-				articleType.setName(item.getName());
-				articleTypeMapper.update(articleType, null);
+				articleTypeInDb.setName(item.getName());
+				EntityWrapper<ArticleType> wrapper = new EntityWrapper<>();
+				wrapper.eq("id", articleTypeInDb.getId());
+				articleTypeMapper.update(articleTypeInDb, wrapper);
 			} else {
 				//不存在，则新建
-				queryMap.put("code", articleSpider.getParentTypeCode());
-				List<ArticleType> parentArticleType = articleTypeMapper.selectByMap(queryMap);
+				ArticleType parentQueryParam = new ArticleType();
+				parentQueryParam.setCode(articleSpider.getParentTypeCode());
+				ArticleType parentArticleType = articleTypeMapper.selectOne(parentQueryParam);
+
+				//判断父类别有没有，没有则新建
+				if (null == parentArticleType) {
+					parentArticleType = new ArticleType();
+					parentArticleType.setCode(articleSpider.getParentTypeCode());
+					ArticleSpider.ParentItem parentType = articleSpider.getParentType();
+					if (null != parentType) {
+						parentArticleType.setName(parentType.getName());
+					} else {
+						parentArticleType.setName(articleSpider.getParentTypeCode());
+					}
+
+					articleTypeMapper.insert(parentArticleType);
+				}
 
 				ArticleType articleType = new ArticleType();
 				articleType.setCode(item.getCode());
 				articleType.setName(item.getName());
-				if (CollectionUtils.isNotEmpty(parentArticleType)) {
-					articleType.setParentId(parentArticleType.get(0).getId());
-				}
+				articleType.setParentId(parentArticleType.getId());
 				articleTypeMapper.insert(articleType);
 			}
 		});
