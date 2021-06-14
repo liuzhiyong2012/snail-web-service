@@ -10,4 +10,5 @@ import com.snail.web.modules.setting.dto.entity.Setting;
  */
 public interface SettingMapper extends BaseMapper<Setting> {
     SettingDto getSetting(SettingDto SettingDto);
+    void updateSetting(SettingDto SettingDto);
 }
