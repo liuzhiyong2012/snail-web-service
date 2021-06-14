@@ -31,6 +31,7 @@ public class UserController {
 
         return userService.login(user);
     }
+
     @Auth
     @PostMapping("/page")
     public PageBaseResponse page(@RequestBody UserRequest userRequest, HttpServletRequest request) {

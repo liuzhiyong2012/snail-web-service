@@ -4,6 +4,9 @@
     <update id="update">
         update setting
     </update>
+    <update id="updateSetting">
+        update setting set content = #{content} where id = #{id}
+    </update>
 
 
     <select id="getSetting" resultType="com.snail.web.modules.setting.dto.SettingDto">
