@@ -13,7 +13,7 @@ public class UserRoleRequest extends BaseRequest implements Serializable {
 //	private String cnName;
 //	private String enName;
 	private String name;
-	private String id;
+//	private String id;
 
 	public String validSave(){
 		if (StringUtils.isEmptyStr(name)) {

@@ -13,8 +13,8 @@ import org.apache.commons.lang.StringUtils;
 public class UserRequest extends BaseRequest {
     private String username;
     private String password;
-    private String roleId;
-    private String id;
+//    private String roleId;
+//    private String id;
     private String name;
 
     public String   validDate(){
@@ -23,9 +23,9 @@ public class UserRequest extends BaseRequest {
             err="用户名不能为空";
         }
 
-        if(StringUtils.isEmpty(roleId)){
+        /*if(StringUtils.isEmpty(roleId)){
             err="角色不能为空";
-        }
+        }*/
         return err;
     }
 }

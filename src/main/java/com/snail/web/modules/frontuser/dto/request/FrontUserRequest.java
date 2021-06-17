@@ -11,15 +11,13 @@ import org.apache.commons.lang.StringUtils;
 @Data
 @ToString
 public class FrontUserRequest extends BaseRequest {
-
-//    private Integer pageNumber;
-//    private Integer pageSize;
-    private String id;
+//    private String id;
     private String username;
     private String password;
     private String name;
     private String phone;
     private String email;
+    private String status;
     private String roleType;
 
     public String   validDate(){

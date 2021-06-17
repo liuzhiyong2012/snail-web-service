@@ -4,6 +4,7 @@ package com.snail.web.modules.frontuser.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.frontuser.dto.entity.FrontUser;
@@ -13,10 +14,12 @@ import com.snail.web.modules.frontuser.mapper.FrontUserMapper;
 import com.snail.web.modules.frontuser.service.FrontUserService;
 import com.snail.web.utils.RequestUtils;
 import com.snail.web.utils.ResponseUtils;
+import com.snail.web.utils.SessionUtils;
 import com.snail.web.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,35 +41,38 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
 
 
-   /* @Override
-    public BaseResponse update(UserRequest userRequest, String userId)  {
-        String err = userRequest.validDate();
+    @Override
+    public BaseResponse update(FrontUserRequest frontUserRequest, String userId)  {
+        String err = frontUserRequest.validDate();
         if(!StringUtils.isEmptyStr(err)){
             return ResponseUtils.errorMsg(err);
         }
-        if(StringUtils.isEmptyStr(userRequest.getId())){
+        /*if(StringUtils.isEmptyStr(frontUserRequest.getId())){
             err="id不能为空";
             return ResponseUtils.errorMsg(err);
-        }
-        Integer count = this.baseMapper.count(userRequest);
+        }*/
+        Integer count = this.baseMapper.count(frontUserRequest);
         if(count>0){
             err = "用户名已存在";
             return ResponseUtils.errorMsg(err);
         }
-        EntityWrapper<User> wrapper = new EntityWrapper<>();
-        wrapper.eq("id",userRequest.getId());
-        User u = new User();
-        u.setUsername(userRequest.getUsername());
-        if(!StringUtils.isEmptyStr(userRequest.getPassword())){
-            u.setPassword(userRequest.getPassword());
+        EntityWrapper<FrontUser> wrapper = new EntityWrapper<FrontUser>();
+        wrapper.eq("id",frontUserRequest.getId());
+        FrontUser u = new FrontUser();
+        u.setUsername(frontUserRequest.getUsername());
+        if(!StringUtils.isEmptyStr(frontUserRequest.getPassword())){
+            u.setPassword(frontUserRequest.getPassword());
         }
-        u.setName(userRequest.getName());
-        u.setRoleId(userRequest.getRoleId());
-        u.setUpdatedBy(Long.parseLong(userId));
+        u.setPhone(frontUserRequest.getPhone());
+        u.setEmail(frontUserRequest.getEmail());
+
+        u.setRoleType(frontUserRequest.getRoleType());
+        u.setStatus(frontUserRequest.getStatus());
+
         u.setUpdatedTime(new Date());
         this.baseMapper.update(u,wrapper);
         return ResponseUtils.success();
-    }*/
+    }
 
     @Override
     public BaseResponse insert(FrontUserRequest userRequest, String userId) {
@@ -113,7 +119,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
     }
 
     @Override
-    public BaseResponse login(FrontUser frontUser) {
+    public BaseResponse login(FrontUser frontUser, HttpServletRequest request) {
 
         if (StringUtils.isEmptyStr(frontUser.getUsername()) || StringUtils.isEmptyStr(frontUser.getPassword())) {
             return ResponseUtils.errorMsg("请输入用户名或密码");
@@ -130,6 +136,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         if (!users.get(0).getPassword().equals(frontUser.getPassword())) {
             return ResponseUtils.errorMsg("密码错误");
         }
+
 //        HashMap<String, String> map = new HashMap<>();
 //        map.put("id",users.get(0).getId());
 //        List<String> list = EncryptUtils.genKeyPair();
@@ -139,24 +146,37 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 //        String token = IdWorker.get32UUID();
 //        returnMap.put("token",token);
 //        returnMap.
-        String token = RequestUtils.getToken(users.get(0).getId()+"",users.get(0).getPassword());
-        Map<String,String> map = new HashMap<>();
+
+        FrontUser loginUser = users.get(0);
+        String token = RequestUtils.getToken(loginUser.getId()+"",loginUser.getPassword());
+        Map<String,Object> map = new HashMap<>();
+
+        request.setAttribute(BaseConstant.FRONT_USER_KEY,map);
+
+        SessionUtils.setFrontSession(request,map);
+
         map.put("token",token);
-        map.put("userName",users.get(0).getName());
+        map.put("userName",loginUser.getName());
+        map.put("userId",loginUser.getId() + "");
+        map.put("roleType",loginUser.getRoleType());
+        map.put("userInfo",loginUser);
+
 //        RedisUtils.saveAdminToken(redisTemplate, token,users.get(0).getId());
         return ResponseUtils.convert(map);
     }
 
-    /*@Override
-    public BaseResponse deleteById(UserRequest userRequest, String userId)  {
+    @Override
+    public BaseResponse deleteById(FrontUserRequest frontUserRequest, String userId)  {
         String errMessage= "";
-        if(StringUtils.isEmptyStr(userRequest.getId())){
+        /*if(StringUtils.isEmptyStr(frontUserRequest.getId())){
             errMessage="id不能为空";
             return ResponseUtils.errorMsg(errMessage);
-        }
-        EntityWrapper<User> wrapper = new EntityWrapper<>();
-        wrapper.eq("id",userRequest.getId());
-        this.delete(wrapper);
+        }*/
+
+        this.baseMapper.deleteRecord(frontUserRequest);
+        /*EntityWrapper<FrontUser> wrapper = new EntityWrapper<>();
+        wrapper.eq("id",frontUserRequest.getId());
+        this.delete(wrapper);*/
         return ResponseUtils.success();
-    }*/
+    }
 }

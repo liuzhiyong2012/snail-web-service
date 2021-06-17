@@ -1,6 +1,7 @@
 package com.snail.web.dto;
 
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,10 +13,19 @@ import java.util.TimeZone;
  * Created by Uvaso on 2019/8/14.
  */
 @Data
-public class BaseRequest implements Serializable {
+public class BaseRequest  extends BaseEntity implements Serializable {
+    @TableField(exist = false)
     private Integer pageNumber;
+
+    @TableField(exist = false)
     private Integer pageSize;
+
+
+    @TableField(exist = false)
     private Integer start;
+
+
+    @TableField(exist = false)
     private String keyword;
 
     public void setPageNumber(Integer page) {

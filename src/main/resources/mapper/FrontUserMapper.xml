@@ -2,22 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.snail.web.modules.frontuser.mapper.FrontUserMapper">
 
+    <delete id="deleteRecord">
+        update front_user set is_deleted = 1  where id = #{id}
+    </delete>
+
 
     <select id="page" resultType="com.snail.web.modules.frontuser.dto.response.FrontUserReponse">
-        select us.id, us.username,us.phone,us.role_type as roleType, us.created_time as createdTime
+        select us.id, us.username,us.phone,us.email,us.status,us.role_type as roleType, us.created_time as createdTime
          from `front_user` us
-         where 1=1
+         where 1=1 and is_deleted != 1
          <if test="username != null">
-             and ur.username=#{username}
+             and instr( us.username,#{username}) > 0
          </if>
         <if test="phone != null">
-            and id !=#{id}
+            and instr(us.phone,#{phone}) > 0
         </if>
+        <if test="email != null">
+            and instr(us.email,#{email}) > 0
+        </if>
+        <if test="status != null">
+            and us.status = #{status}
+        </if>
+        <if test="roleType != null">
+            and us.role_type = #{roleType}
+        </if>
+
         limit #{start},#{pageSize}
     </select>
+
     <select id="count" resultType="java.lang.Integer">
             select count(1) from `front_user`
-            where 1=1
+            where 1=1 and  is_deleted != 1
 
             <if test="phone != null">
                 and phone !=#{phone}

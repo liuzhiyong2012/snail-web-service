@@ -18,4 +18,7 @@ public interface FrontUserMapper extends BaseMapper<FrontUser> {
     List<FrontUserReponse> page(FrontUserRequest frontUserRequest);
 
     Integer count(FrontUserRequest request);
+
+    void  deleteRecord(FrontUserRequest request);
+
 }

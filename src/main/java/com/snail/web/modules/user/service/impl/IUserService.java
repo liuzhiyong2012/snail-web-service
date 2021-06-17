@@ -80,10 +80,10 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
         if(!StringUtils.isEmptyStr(err)){
             return ResponseUtils.errorMsg(err);
         }
-        if(StringUtils.isEmptyStr(userRequest.getId())){
+        /*if(StringUtils.isEmptyStr(userRequest.getId())){
             err="id不能为空";
             return ResponseUtils.errorMsg(err);
-        }
+        }*/
         Integer count = this.baseMapper.count(userRequest);
         if(count>0){
             err = "用户名已存在";
@@ -97,7 +97,7 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
             u.setPassword(userRequest.getPassword());
         }
         u.setName(userRequest.getName());
-        u.setRoleId(userRequest.getRoleId());
+//        u.setRoleId(userRequest.getRoleId());
         u.setUpdatedBy(Long.parseLong(userId));
         u.setUpdatedTime(new Date());
         this.baseMapper.update(u,wrapper);
@@ -123,7 +123,7 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
         u.setUsername(userRequest.getUsername());
         u.setName(userRequest.getName());
         u.setPassword(userRequest.getPassword());
-        u.setRoleId(userRequest.getRoleId());
+//        u.setRoleId(userRequest.getRoleId());
         u.setCreatedBy(Long.parseLong(userId));
         u.setCreatedTime(new Date());
         u.setUpdatedBy(Long.parseLong(userId));
@@ -188,10 +188,10 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
     @Override
     public BaseResponse deleteById(UserRequest userRequest, String userId)  {
         String errMessage= "";
-        if(StringUtils.isEmptyStr(userRequest.getId())){
+        /*if(StringUtils.isEmptyStr(userRequest.getId())){
             errMessage="id不能为空";
             return ResponseUtils.errorMsg(errMessage);
-        }
+        }*/
         EntityWrapper<User> wrapper = new EntityWrapper<>();
         wrapper.eq("id",userRequest.getId());
         this.delete(wrapper);

@@ -1,10 +1,8 @@
 package com.snail.web.modules.crawler.dto.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.snail.web.modules.AuditDomain;
+import com.snail.web.dto.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,11 +13,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("ms_article_type")
-public class ArticleType extends AuditDomain {
+public class ArticleType extends BaseRequest {
 
+/*
 	@TableId
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
+*/
 
 	/**
 	 * 名称
@@ -31,10 +31,26 @@ public class ArticleType extends AuditDomain {
 	 */
 	private String code;
 
+	private String desc;
+
+	private String status;
+
+	private String level;
+
+	private String param;
+
+	private String type;
+
+
+
 	/**
 	 * 父类别ID
 	 */
+	@TableField("parent_id")
 	private Long parentId;
+
+	@TableField("is_deleted")
+	private String isDeleted;
 
 
 }

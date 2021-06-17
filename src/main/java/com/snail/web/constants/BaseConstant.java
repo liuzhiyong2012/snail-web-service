@@ -17,4 +17,9 @@ public class BaseConstant {
     //企业状态
     public final static String ENTERPRISE_NEW_USER="new_user";
     public final static String ENTERPRISE_PASSWORD_RESET="password_reset";
+
+    //用来存放前端用户的基本信息
+    public final static String FRONT_USER_KEY = "front_user_key";
+    //用来存放管理端用户的基本信息
+    public final static String ADMIN_USER_KEY = "admin_user_key";
 }

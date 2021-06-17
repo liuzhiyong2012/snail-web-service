@@ -8,11 +8,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan("com.snail.web.modules.*.mapper")
-@SpringBootApplication(scanBasePackages = {"com.geccocrawler.gecco.spring",
-		"com.snail.web.modules.crawler"})
+@SpringBootApplication(scanBasePackages = {"com.geccocrawler.gecco.spring","com.snail.web.modules"})
 @EnableTransactionManagement
 public class SnailWebServiceApplication {
-
+//(scanBasePackages = {"com.geccocrawler.gecco.spring","com.snail.web.modules.crawler"})
 	public static void main(String[] args) {
 		SpringApplication.run(SnailWebServiceApplication.class, args);
 	}

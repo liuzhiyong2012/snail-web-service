@@ -1,6 +1,7 @@
 package com.snail.web.modules.frontuser.controller;
 
 
+import com.snail.web.common.anno.Auth;
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -26,8 +28,9 @@ public class FrontUserController {
     private FrontUserService frontUserService;
 
     @PostMapping("/login")
-    public BaseResponse login(@RequestBody FrontUser frontUser) {
-        return frontUserService.login(frontUser);
+    public BaseResponse login(@RequestBody FrontUser frontUser, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return frontUserService.login(frontUser,request);
     }
 
 //    @Auth
@@ -43,18 +46,20 @@ public class FrontUserController {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return frontUserService.insert(frontUserRequest, userId);
     }
- /*
+
     @Auth
     @PostMapping("/update")
-    public BaseResponse update(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+    public BaseResponse update(@RequestBody FrontUserRequest frontUserRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return userService.update(userRequest, userId);
+        return frontUserService.update(frontUserRequest, userId);
     }
+
+
 
     @Auth
     @PostMapping("/deleteById")
-    public BaseResponse deleteById(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+    public BaseResponse deleteById(@RequestBody FrontUserRequest frontUserRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return userService.deleteById(userRequest, userId);
-    }*/
+        return frontUserService.deleteById(frontUserRequest, userId);
+    }
 }

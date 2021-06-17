@@ -36,7 +36,4 @@ public class SettingController {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return settingService.update(settingDto, userId);
     }
-
-
-
 }

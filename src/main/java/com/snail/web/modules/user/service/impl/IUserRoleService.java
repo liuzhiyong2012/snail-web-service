@@ -96,9 +96,9 @@ public class IUserRoleService extends ServiceImpl<UserRoleMapper, UserRole> impl
         if(weight==null){
             return ResponseUtils.errorMsg("无权限");
         }
-        if(StringUtils.isEmptyStr(request.getId())){
+       /* if(StringUtils.isEmptyStr(request.getId())){
             return ResponseUtils.errorMsg("id不能为空");
-        }
+        }*/
         String val = request.validSave();
         if (val != null) {
             return ResponseUtils.errorMsg(val);
@@ -125,9 +125,9 @@ public class IUserRoleService extends ServiceImpl<UserRoleMapper, UserRole> impl
         if(weight==null){
             return ResponseUtils.errorMsg("无权限");
         }
-        if(StringUtils.isEmptyStr(request.getId())){
+        /*if(StringUtils.isEmptyStr(request.getId())){
             return ResponseUtils.errorMsg("id不能为空");
-        }
+        }*/
         EntityWrapper ew = new EntityWrapper();
         ew.eq("id",request.getId());
         this.baseMapper.delete(ew);

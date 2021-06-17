@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.web.modules.article.mapper.ArticleNewMapper">
+    <delete id="deleteRecord">
+        update ms_article set is_deleted = 1  where id = #{id}
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+            select count(1) from `ms_article`
+            where 1=1 and  is_deleted != 1
+        <if test="title != null">
+            and name = #{name}
+        </if>
+    </select>
+
+    <select id="page" resultType="com.snail.web.modules.article.dto.ArticleNew">
+        select
+        atl.id,
+        atl.first_type_id as firstTypeId,
+        atl.first_type_name as firstTypeName,
+        atl.second_type_id as secondTypeId,
+        atl.second_type_name as secondTypeName,
+        atl.source,
+        atl.is_deleted as isDeleted,
+        atl.publish_time as publishTime,
+        atl.summary,
+        atl.created_by as userId,
+        atl.content as content,
+        atl.raw_content as rawContent
+        from `ms_article` atl
+        where 1=1 and atl.is_deleted != 1
+        <if test="title != null">
+            and instr( atl.title,#{title}) > 0
+        </if>
+        <if test = "status != null">
+            and atl.status = #{status}
+        </if>
+
+        limit #{start},#{pageSize}
+    </select>
+</mapper>
