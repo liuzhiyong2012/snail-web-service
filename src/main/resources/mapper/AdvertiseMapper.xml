@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.web.modules.advertise.mapper.AdvertiseMapper">
+    <delete id="deleteRecord">
+        update advertise set is_deleted = 1  where id = #{id}
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+            select count(1) from `advertise` adv
+            where 1=1 and  is_deleted != 1
+        <if test="name != null">
+            and instr(adv.name,#{name}) > 0
+        </if>
+        <if test="status != null">
+            and adv.status = #{status}
+        </if>
+        <if test="type != null">
+            and adv.type = #{type}
+        </if>
+        <if test="startTime != null">
+            and adv.start_time &lt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and adv.end_time &gt;= #{endTime}
+        </if>
+        <if test="positionId != null">
+            and adv.position_id = #{positionId}
+        </if>
+    </select>
+
+    <select id="page" resultType="com.snail.web.modules.advertise.dto.entity.Advertise">
+        select
+        adv.id,
+        adv.name,
+        adv.content,
+        adv.link_url as linkUrl,
+
+        adv.position_id as positionId,
+        adv.article_id as articleId,
+        atype.name as positionName,
+
+        adv.type,
+        adv.status,
+        adv.start_time as startTime,
+        adv.end_time as endTime,
+        adv.created_time as createdTime,
+        adv.updated_time as updatedTime,
+        adv.created_by as createdBy,
+        adv.updated_by as updatedBy
+        from `advertise` adv
+        left join `ms_article_type` atype on atype.id = adv.position_id
+        where 1=1 and adv.is_deleted != 1
+        <if test="name != null">
+            and instr(adv.name,#{name}) > 0
+        </if>
+        <if test="status != null">
+            and adv.status = #{status}
+        </if>
+        <if test="type != null">
+            and adv.type = #{type}
+        </if>
+        <if test="startTime != null">
+            and adv.start_time &lt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and adv.end_time &gt;= #{endTime}
+        </if>
+        <if test="positionId != null">
+            and adv.position_id = #{positionId}
+        </if>
+
+        limit #{start},#{pageSize}
+    </select>
+</mapper>

@@ -6,36 +6,78 @@
     </delete>
 
     <select id="count" resultType="java.lang.Integer">
-            select count(1) from `ms_article`
-            where 1=1 and  is_deleted != 1
-        <if test="title != null">
-            and name = #{name}
+            select count(1)
+        from `ms_article` atl
+
+        left join ms_article_type mat on mat.id = atl.first_type_id
+        left join front_user fu on fu.id = atl.created_by
+        where 1=1 and atl.is_deleted != 1
+        <if test="username != null">
+            and instr( fu.username,#{username}) > 0
         </if>
+        <if test="title != null">
+            and instr( atl.title,#{title}) > 0
+        </if>
+        <if test="firstTypeId != null">
+            and instr( atl.first_type_id,#{firstTypeId}) > 0
+        </if>
+        <if test="startTime != null">
+            and atl.publish_time &lt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and atl.publish_time &gt;= #{endTime}
+        </if>
+
+        <if test = "status != null">
+            and atl.status = #{status}
+        </if>
+        limit #{start},#{pageSize}
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.ArticleNew">
         select
         atl.id,
+        atl.title,
         atl.first_type_id as firstTypeId,
-        atl.first_type_name as firstTypeName,
+        mat.name as firstTypeName,
         atl.second_type_id as secondTypeId,
-        atl.second_type_name as secondTypeName,
+        mat2.name as secondTypeName,
         atl.source,
+        atl.image_url as imageUrl,
+        atl.type,
+        atl.status,
         atl.is_deleted as isDeleted,
         atl.publish_time as publishTime,
         atl.summary,
-        atl.created_by as userId,
+        fu.username as username,
+        atl.created_by as createdBy,
         atl.content as content,
         atl.raw_content as rawContent
         from `ms_article` atl
+
+        left join ms_article_type mat on mat.id = atl.first_type_id
+        left join ms_article_type mat2 on mat2.id = atl.second_type_id
+        left join front_user fu on fu.id = atl.created_by
         where 1=1 and atl.is_deleted != 1
+        <if test="username != null">
+            and instr( fu.username,#{username}) > 0
+        </if>
         <if test="title != null">
             and instr( atl.title,#{title}) > 0
         </if>
+        <if test="firstTypeId != null">
+            and instr( atl.first_type_id,#{firstTypeId}) > 0
+        </if>
+        <if test="startTime != null">
+            and atl.publish_time &lt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and atl.publish_time &gt;= #{endTime}
+        </if>
+
         <if test = "status != null">
             and atl.status = #{status}
         </if>
-
         limit #{start},#{pageSize}
     </select>
 </mapper>

@@ -53,4 +53,14 @@ public class ArticleType extends BaseRequest {
 	private String isDeleted;
 
 
+
+	@TableField(exist = false)
+	private String parentCode;
+
+	@TableField(exist = false)
+	private String parentType;
+
+
+
+
 }

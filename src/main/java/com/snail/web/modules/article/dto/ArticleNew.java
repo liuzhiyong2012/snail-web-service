@@ -2,9 +2,12 @@ package com.snail.web.modules.article.dto;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.snail.web.dto.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 
 /**
@@ -48,6 +51,19 @@ public class ArticleNew extends BaseRequest {
 
 	private String status;
 
+	private String type;
+
 	@TableField(exist = false)
-	private long userId;
+	private Long userId;
+
+	@TableField(exist = false)
+	private String username;
+
+	@TableField(exist = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date startTime;
+
+	@TableField(exist = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date endTime;
 }
