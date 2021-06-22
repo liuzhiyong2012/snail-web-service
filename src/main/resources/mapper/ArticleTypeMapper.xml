@@ -7,7 +7,7 @@
 
     <select id="count" resultType="java.lang.Integer">
             select count(1) from `ms_article_type` atype
-            inner join  `ms_article_type` patype on atype.parent_id = patype.id
+            left join  `ms_article_type` patype on atype.parent_id = patype.id
         where 1=1 and atype.is_deleted != 1
         <if test="name != null">
             and instr( atype.name,#{name}) > 0

@@ -8,15 +8,22 @@ import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.advertise.dto.entity.Advertise;
 import com.snail.web.modules.advertise.mapper.AdvertiseMapper;
 import com.snail.web.modules.advertise.service.AdvertiseService;
-
+import com.snail.web.modules.crawler.dto.entity.ArticleType;
+import com.snail.web.modules.crawler.mapper.ArticleTypeMapper;
 import com.snail.web.utils.ResponseUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> implements AdvertiseService {
+        @Autowired
+        ArticleTypeMapper articleTypeMapper;
+
 
         @Override
         public BaseResponse insert(Advertise advertise, String userId) {
@@ -26,6 +33,38 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         advertise.setCreatedTime(new Date());
         this.baseMapper.insert(advertise);
         return ResponseUtils.success();
+    }
+
+    @Override
+    public BaseResponse getAllUsingAdvertises(Advertise advertise, String userId){
+        ArticleType ArticleTypeQuery = new ArticleType();
+        ArticleTypeQuery.setStatus("1");
+        ArticleTypeQuery.setPageNumber(1);
+        ArticleTypeQuery.setPageSize(1000);
+        ArticleTypeQuery.setParentCode("advertisePosition");
+
+
+        List<ArticleType> articleTypeList = articleTypeMapper.page(ArticleTypeQuery);
+        Map<String, Map> map = new HashMap<String,Map>();
+
+        Advertise advertiseQuery = new Advertise();
+
+        advertiseQuery.setStatus("1");
+        advertiseQuery.setPageNumber(1);
+        advertiseQuery.setPageSize(1000);
+
+
+        for(int i = 0; i < articleTypeList.size(); i++){
+            ArticleType articleType = articleTypeList.get(i);
+            advertiseQuery.setPositionId(articleType.getId());
+            List<Advertise> advertiseList= this.baseMapper.page(advertiseQuery);
+
+            Map typeMap = new HashMap<String,Object>();
+            typeMap.put("params",articleType.getParam());
+            typeMap.put("list",advertiseList);
+            map.put(articleType.getCode(),typeMap);
+        }
+        return ResponseUtils.convert(map);
     }
 
 

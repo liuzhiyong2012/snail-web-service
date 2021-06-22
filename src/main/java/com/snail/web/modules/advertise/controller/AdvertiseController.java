@@ -42,4 +42,10 @@ public class AdvertiseController {
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
         return advertiseService.page( advertise,userId);
     }
+
+    @PostMapping("/all")
+    public BaseResponse all(@RequestBody Advertise advertise, HttpServletRequest request){
+        String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
+        return advertiseService.getAllUsingAdvertises(advertise,userId);
+    }
 }

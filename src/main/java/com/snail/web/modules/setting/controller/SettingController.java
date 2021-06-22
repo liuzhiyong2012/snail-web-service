@@ -3,7 +3,7 @@ package com.snail.web.modules.setting.controller;
 
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
-import com.snail.web.modules.setting.dto.SettingDto;
+import com.snail.web.modules.setting.dto.entity.Setting;
 import com.snail.web.modules.setting.service.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +25,15 @@ public class SettingController {
     private SettingService settingService;
 
     @PostMapping("/getSetting")
-    public BaseResponse getSetting(@RequestBody SettingDto settingDto, HttpServletRequest request) {
+    public BaseResponse getSetting(@RequestBody Setting setting, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return settingService.getSetting(settingDto);
+        return settingService.getSetting(setting);
     }
 
 
     @PostMapping("/updateSetting")
-    public BaseResponse update(@RequestBody SettingDto settingDto, HttpServletRequest request) {
+    public BaseResponse update(@RequestBody Setting setting, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return settingService.update(settingDto, userId);
+        return settingService.update(setting, userId);
     }
 }

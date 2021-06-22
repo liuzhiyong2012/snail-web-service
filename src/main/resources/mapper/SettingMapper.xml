@@ -5,12 +5,31 @@
         update setting
     </update>
     <update id="updateSetting">
-        update setting set content = #{content} where id = #{id}
+        update setting set content = #{content},
+         flag = #{flag},
+         logo_text = #{logoText},
+         keywords = #{keywords},
+         protocal = #{protocal},
+         friend_links = #{friendLinks},
+         primary_color = #{primaryColor},
+         sensitive_words = #{sensitiveWords}
+        where id = #{id}
     </update>
 
 
-    <select id="getSetting" resultType="com.snail.web.modules.setting.dto.SettingDto">
-        select id,content,flag,created_time as createdTime,updated_time as updatedTime from setting where 1=1
+    <select id="getSetting" resultType="com.snail.web.modules.setting.dto.entity.Setting">
+        select id,
+        content,
+        flag,
+        logo_text as logoText,
+        keywords,
+        protocal,
+        friend_links as friendLinks,
+        primary_color as primaryColor,
+        sensitive_words as sensitiveWords,
+        created_time as createdTime,
+        updated_time as updatedTime
+        from setting where 1=1
         <if test="flag != null">
            and  flag = #{flag}
         </if>

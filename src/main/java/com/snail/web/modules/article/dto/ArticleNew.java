@@ -22,14 +22,10 @@ public class ArticleNew extends BaseRequest {
 	@TableField("first_type_id")
 	private long firstTypeId;
 
-	@TableField("first_type_name")
-	private String firstTypeName;
+
 
 	@TableField("second_type_id")
 	private long secondTypeId;
-
-	@TableField("second_type_name")
-	private String secondTypeName;
 
 	private String source;
 
@@ -66,4 +62,19 @@ public class ArticleNew extends BaseRequest {
 	@TableField(exist = false)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date endTime;
+
+	@TableField(exist = false)
+	private String firstTypeName;
+
+	@TableField(exist = false)
+	private String secondTypeName;
+
+	@TableField(exist = false)
+	private String firstTypeCode;
+
+	@TableField(exist = false)
+	private String secondTypeCode;
+
+
+
 }

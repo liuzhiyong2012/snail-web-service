@@ -10,4 +10,6 @@ public interface AdvertiseService extends IService<Advertise> {
     PageBaseResponse page(Advertise advertise, String userId);
     BaseResponse delete(Advertise advertise, String userId);
     BaseResponse update(Advertise advertise, String userId);
+
+    BaseResponse getAllUsingAdvertises(Advertise advertise, String userId);
 }
