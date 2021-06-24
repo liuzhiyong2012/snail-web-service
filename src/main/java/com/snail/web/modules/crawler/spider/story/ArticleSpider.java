@@ -3,6 +3,7 @@ package com.snail.web.modules.crawler.spider.story;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
+import com.snail.web.constants.ArticleConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,11 +20,27 @@ import java.util.Optional;
 		"http://www.weishangshijie.cn/news/",
 		"http://www.weishangshijie.cn/duanzi/",
 		"http://www.weishangshijie.cn/xueyuan/"},
-		pipelines = "articlePipeline")
+		pipelines = "articlePipeLine")
 public class ArticleSpider implements HtmlBean {
 
 	@Request
 	private HttpRequest request;
+
+	public String getSecondTypeName() {
+		return secondTypeName;
+	}
+
+	public void setSecondTypeName(String secondTypeName) {
+		this.secondTypeName = secondTypeName;
+	}
+
+	@Text
+	@HtmlField(cssPath = ".menu_1 ul li a.cur")
+	private String secondTypeName;
+
+	private String firstTypeCode;
+
+	private String secondTypeCode;
 
 	private String parentTypeCode;
 
@@ -53,6 +70,38 @@ public class ArticleSpider implements HtmlBean {
 		}
 		return parentTypeCode;
 	}
+
+	public String getSecondTypeCode() {
+		if (null != this.getRequest() && StringUtils.isNotBlank(this.getRequest().getUrl())) {
+			URI uri;
+			try {
+				uri = new URI(this.getRequest().getUrl());
+			} catch (URISyntaxException e) {
+				return null;
+			}
+			return uri.getPath().replace("/", "");
+		}
+		return "error";
+	}
+
+	public String getFirstTypeCode() {
+		String path = "";
+		if (null != this.getRequest() && StringUtils.isNotBlank(this.getRequest().getUrl())) {
+			URI uri;
+			try {
+				uri = new URI(this.getRequest().getUrl());
+			} catch (URISyntaxException e) {
+				return null;
+			}
+			path = uri.getPath().replace("/", "");
+
+		}
+		String firstTypeCode = ArticleConstant.IMFORMATION_CRAWLER_MAP.get(path);
+		return firstTypeCode;
+	}
+
+
+
 
 	public ParentItem getParentType() {
 		if (CollectionUtils.isNotEmpty(this.parentTypes)) {
@@ -86,7 +135,7 @@ public class ArticleSpider implements HtmlBean {
 
 	public static class Item implements HtmlBean {
 
-		@Href(click = true)
+		@Href(click = false)
 		@HtmlField(cssPath = "li a")
 		private String url;
 

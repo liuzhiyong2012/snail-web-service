@@ -55,4 +55,7 @@ public class Advertise extends BaseRequest {
     @TableField("is_deleted")
     private String isDeleted;
 
+    @TableField(exist = false)
+    private String articleImageUrl;
+
 }

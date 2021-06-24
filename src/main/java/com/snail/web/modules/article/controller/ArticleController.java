@@ -2,8 +2,8 @@ package com.snail.web.modules.article.controller;
 
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
-import com.snail.web.modules.article.dto.ArticleNew;
-import com.snail.web.modules.article.service.ArticleNewService;
+import com.snail.web.modules.article.dto.entity.Article;
+import com.snail.web.modules.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,30 +16,30 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/article")
 public class ArticleController {
     @Autowired
-    ArticleNewService articleNewService;
+    ArticleService articleService;
 
     @PostMapping("/insert")
-    public BaseResponse insert(@RequestBody ArticleNew articleNew, HttpServletRequest request){
+    public BaseResponse insert(@RequestBody Article article, HttpServletRequest request){
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
-        return articleNewService.insert( articleNew,userId);
+        return articleService.insert( article,userId);
     }
 
     @PostMapping("/delete")
-    public BaseResponse delete(@RequestBody ArticleNew articleNew, HttpServletRequest request){
+    public BaseResponse delete(@RequestBody Article article, HttpServletRequest request){
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
-        return articleNewService.delete( articleNew,userId);
+        return articleService.delete( article,userId);
     }
 
 
     @PostMapping("/update")
-    public BaseResponse update(@RequestBody ArticleNew articleNew, HttpServletRequest request){
+    public BaseResponse update(@RequestBody Article article, HttpServletRequest request){
         String userId = (String)request.getAttribute(BaseConstant.USER_INFO);
-        return articleNewService.update(articleNew,userId);
+        return articleService.update(article,userId);
     }
 
     @PostMapping("/page")
-    public BaseResponse page(@RequestBody ArticleNew articleNew, HttpServletRequest request){
+    public BaseResponse page(@RequestBody Article article, HttpServletRequest request){
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
-        return articleNewService.page( articleNew,userId);
+        return articleService.page( article,userId);
     }
 }

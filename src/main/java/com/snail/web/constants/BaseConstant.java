@@ -7,6 +7,8 @@ public class BaseConstant {
     //用户储存字段
     public final static String USER_INFO = "LS:fLsdA";
 
+
+
     //邮箱发送者
 //    public final static String MAIL_SENDER="vpclub_cucc@163.com";
 //    public final static String MAIL_SENDER="vivianflygirl@qq.com";
@@ -22,4 +24,6 @@ public class BaseConstant {
     public final static String FRONT_USER_KEY = "front_user_key";
     //用来存放管理端用户的基本信息
     public final static String ADMIN_USER_KEY = "admin_user_key";
+
+    public final static Integer SPIDER_MAX_PAGE = 2;
 }

@@ -37,7 +37,9 @@
 
         adv.position_id as positionId,
         adv.article_id as articleId,
+
         atype.name as positionName,
+        ma.image_url as articleImageUrl,
 
         adv.type,
         adv.status,
@@ -49,6 +51,7 @@
         adv.updated_by as updatedBy
         from `advertise` adv
         left join `ms_article_type` atype on atype.id = adv.position_id
+        left join `ms_article` ma on ma.id = adv.article_id
         where 1=1 and adv.is_deleted != 1
         <if test="name != null">
             and instr(adv.name,#{name}) > 0
@@ -68,7 +71,6 @@
         <if test="positionId != null">
             and adv.position_id = #{positionId}
         </if>
-
         limit #{start},#{pageSize}
     </select>
 </mapper>

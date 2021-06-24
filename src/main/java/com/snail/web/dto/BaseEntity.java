@@ -18,7 +18,7 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
     @TableId
     @JsonSerialize(using = ToStringSerializer.class)
-    public long id;
+    public Long id;
 
     @TableField("created_by")
     @JsonSerialize(using = ToStringSerializer.class)

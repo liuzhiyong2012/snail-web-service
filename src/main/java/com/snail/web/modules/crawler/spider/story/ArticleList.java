@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * @author Holinc
  */
-@Gecco(matchUrl = {"http://www.weishangshijie.cn/{subArticleType}/",
-		"http://www.weishangshijie.cn/{subArticleType}_{page}/"})
+@Gecco(matchUrl = {
+		"http://www.weishangshijie.cn/{subArticleType}_{page}/"},pipelines = "articleListPipeLine", timeout = 1000)
 public class ArticleList implements HtmlBean {
 
 	@Request
@@ -60,7 +60,7 @@ public class ArticleList implements HtmlBean {
 
 	public static class Item implements HtmlBean {
 
-		@Href(click = true)
+		@Href(click = false)
 		@HtmlField(cssPath = ".tit a")
 		private String url;
 
@@ -71,6 +71,18 @@ public class ArticleList implements HtmlBean {
 		@Text
 		@HtmlField(cssPath = ".laiy")
 		private String source;
+
+		public String getImageUrl() {
+			return imageUrl;
+		}
+
+		public void setImageUrl(String imageUrl) {
+			this.imageUrl = imageUrl;
+		}
+
+		@Image
+		@HtmlField(cssPath = ".h_l >a >img")
+		private String imageUrl;
 
 		public String getUrl() {
 			return url;

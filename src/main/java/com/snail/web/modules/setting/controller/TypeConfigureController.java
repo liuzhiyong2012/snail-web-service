@@ -2,8 +2,8 @@ package com.snail.web.modules.setting.controller;
 
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
-import com.snail.web.modules.crawler.dto.entity.ArticleType;
-import com.snail.web.modules.crawler.service.ArticleTypeService;
+import com.snail.web.modules.article.dto.entity.ArticleType;
+import com.snail.web.modules.article.service.ArticleTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/type")
 public class TypeConfigureController {
     @Autowired
-    ArticleTypeService  articleTypeService;
+    ArticleTypeService articleTypeService;
 
     @PostMapping("/insert")
-    public BaseResponse insert(@RequestBody  ArticleType articleType, HttpServletRequest request){
+    public BaseResponse insert(@RequestBody ArticleType articleType, HttpServletRequest request){
         String userId = (String)request.getAttribute(BaseConstant.USER_INFO);
         return articleTypeService.insert(articleType,userId);
     }

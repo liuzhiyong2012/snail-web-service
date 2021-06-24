@@ -1,14 +1,13 @@
 package com.snail.web.modules.crawler.spider.story;
 
-import com.geccocrawler.gecco.GeccoEngine;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Gecco(matchUrl = "http://www.weishangshijie.cn/{subType}/{page}.html",
-		pipelines = "articleDetailPipeline", timeout = 1000)
+		pipelines = "articleDetailPipeLine", timeout = 1000)
 public class ArticleDetail implements HtmlBean {
 
 	@Request
@@ -42,7 +41,7 @@ public class ArticleDetail implements HtmlBean {
 	/**
 	 * 发布日期
 	 */
-	private LocalDateTime publishTime;
+	private Date publishTime;
 
 	/**
 	 * 导语
@@ -52,8 +51,28 @@ public class ArticleDetail implements HtmlBean {
 	private String summary;
 
 
-	@HtmlField(cssPath = ".content > div.nzlist_l > div.news_list > ul > li:nth-child(1) > div.h_l")
+	//@HtmlField(cssPath = ".content > div.nzlist_l > div.news_list > ul > li:nth-child(1) > div.h_l")
 	private String imageUrl;
+
+	public String getFirstTypeCode() {
+		return firstTypeCode;
+	}
+
+	public void setFirstTypeCode(String firstTypeCode) {
+		this.firstTypeCode = firstTypeCode;
+	}
+
+	private String firstTypeCode;
+
+	public String getSecondTypeCode() {
+		return secondTypeCode;
+	}
+
+	public void setSecondTypeCode(String secondTypeCode) {
+		this.secondTypeCode = secondTypeCode;
+	}
+
+	private String secondTypeCode;
 
 	/**
 	 * 正文
@@ -118,11 +137,11 @@ public class ArticleDetail implements HtmlBean {
 		this.source = source;
 	}
 
-	public LocalDateTime getPublishTime() {
+	public Date getPublishTime() {
 		return publishTime;
 	}
 
-	public void setPublishTime(LocalDateTime publishTime) {
+	public void setPublishTime(Date publishTime) {
 		this.publishTime = publishTime;
 	}
 

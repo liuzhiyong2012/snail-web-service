@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.snail.web.modules.crawler.mapper.ArticleTypeMapper">
+<mapper namespace="com.snail.web.modules.article.mapper.ArticleTypeMapper">
     <delete id="deleteRecord">
         update ms_article_type set is_deleted = 1  where id = #{id}
     </delete>
@@ -39,7 +39,7 @@
 
     </select>
 
-    <select id="page" resultType="com.snail.web.modules.crawler.dto.entity.ArticleType">
+    <select id="page" resultType="com.snail.web.modules.article.dto.entity.ArticleType">
         select atype.id, atype.name,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,atype.parent_id as parentId,atype.created_time as createdTime, atype.updated_time as updatedTime
         from `ms_article_type` atype
         left join  `ms_article_type` patype on atype.parent_id = patype.id
@@ -72,5 +72,38 @@
             and patype.type = #{parentType}
         </if>
         limit #{start},#{pageSize}
+    </select>
+    <select id="getArticleType" resultType="com.snail.web.modules.article.dto.entity.ArticleType">
+        select atype.id, atype.name,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,atype.parent_id as parentId,atype.created_time as createdTime, atype.updated_time as updatedTime
+        from `ms_article_type` atype
+        left join  `ms_article_type` patype on atype.parent_id = patype.id
+        where 1=1 and atype.is_deleted != 1
+        <if test="name != null">
+            and instr( atype.name,#{name}) > 0
+        </if>
+        <if test="code != null">
+            and instr(atype.code,#{code}) > 0
+        </if>
+        <if test="type != null">
+            and atype.type = #{type}
+        </if>
+        <if test="param != null">
+            and atype.param = #{param}
+        </if>
+        <if test="parentId != null">
+            and atype.parent_id = #{parentId}
+        </if>
+        <if test = "status != null">
+            and instr(atype.status,#{status}) > 0
+        </if>
+        <if test=" level != null">
+            and instr(atype.level,#{level}) > 0
+        </if>
+        <if test=" parentCode != null">
+            and patype.code = #{parentCode}
+        </if>
+        <if test=" parentType != null">
+            and patype.type = #{parentType}
+        </if>
     </select>
 </mapper>
