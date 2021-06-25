@@ -2,6 +2,8 @@ package com.snail.web.modules.quartz.dto.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.snail.web.constants.ScheduleConstants;
 import com.snail.web.dto.BaseRequest;
 import com.snail.web.modules.quartz.utils.CronUtils;
@@ -29,6 +31,7 @@ public class SysJob extends BaseRequest
 
     /** 任务ID */
     @TableField("job_id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long jobId;
 
     /** 任务名称 */

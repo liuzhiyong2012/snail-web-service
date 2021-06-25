@@ -14,7 +14,7 @@ public class ArticleConstant {
 
 
     public final static Map<String,String> IMFORMATION_CRAWLER_MAP= new HashMap(){
-        {
+        {   put("index", "shop");
             put("news", "information");
             put("duanzi", "information");
             put("xueyuan", "information");

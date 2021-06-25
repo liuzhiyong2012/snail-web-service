@@ -1,5 +1,6 @@
 package com.snail.web.modules.quartz.task;
 
+import com.geccocrawler.gecco.GeccoEngine;
 import com.geccocrawler.gecco.pipeline.PipelineFactory;
 import org.springframework.stereotype.Component;
 
@@ -59,35 +60,19 @@ public class RyTask
     public void  test(){
         System.out.println("======================test========================");
         //PipelineFactory springPipelineFactory;
-   /*     GeccoEngine.create()
+        GeccoEngine.create()
                 .pipelineFactory(springPipelineFactory)
                 .classpath("com.snail.web.modules.crawler.spider")
                 .seed("http://www.weishangshijie.cn/news/")
-               *//* .seed("http://www.weishangshijie.cn/duanzi/")
-                .seed("http://www.weishangshijie.cn/xueyuan/")*//*
-                .thread(1)
-                *//* .interval(300000000)*//*
+                .seed("http://www.weishangshijie.cn/duanzi/")
+                .seed("http://www.weishangshijie.cn/xueyuan/")
+                .seed("http://weishangshijie.204m.com/index/")
+                .thread(4)
+                //* .interval(300000000)*//*
                 .debug(false)
                 .loop(false)
                 //	.stop()
-                .start();*/
-      /*  new SpringGeccoEngine() {
-            @Override
-            public void init() {
-                GeccoEngine.create()
-                        .pipelineFactory(springPipelineFactory)
-                        .classpath("com.snail.web.modules.crawler.spider")
-                        .seed("http://www.weishangshijie.cn/news/")
-                        .seed("http://www.weishangshijie.cn/duanzi/")
-                        .seed("http://www.weishangshijie.cn/xueyuan/")
-                        .thread(3)
-                        *//* .interval(300000000)*//*
-                        .debug(true)
-                        .loop(false)
-                        //	.stop()
-                        .start();
+                .start();
 
-            }
-        };*/
     }
 }

@@ -25,7 +25,6 @@ public class BaseEntity implements Serializable {
 
     public Long createdBy;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-
     @TableField("created_time")
     public Date createdTime;
 

@@ -7,11 +7,6 @@ public class BaseConstant {
     //用户储存字段
     public final static String USER_INFO = "LS:fLsdA";
 
-
-
-    //邮箱发送者
-//    public final static String MAIL_SENDER="vpclub_cucc@163.com";
-//    public final static String MAIL_SENDER="vivianflygirl@qq.com";
     public final static String MAIL_SENDER="hqs-5Glabs@chinaunicom.cn";
     //提供给洞见的token
     public final static String CUCC_TOKEN="df95af5069d541f5da2c99ccd8b784ad";
@@ -26,4 +21,11 @@ public class BaseConstant {
     public final static String ADMIN_USER_KEY = "admin_user_key";
 
     public final static Integer SPIDER_MAX_PAGE = 2;
+
+    public final static String SPIDER_HOST = "http://www.weishangshijie.cn";
+
+    public final static String SPIDER_INDEX_HOST = "http://weishangshijie.204m.com";
+
+
+
 }

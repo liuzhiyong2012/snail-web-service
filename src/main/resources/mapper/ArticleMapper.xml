@@ -51,7 +51,6 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
-        limit #{start},#{pageSize}
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.entity.Article">
@@ -71,8 +70,7 @@
         atl.summary,
         fu.username as username,
         atl.created_by as createdBy,
-        atl.content as content,
-        atl.raw_content as rawContent
+        atl.content as content
         from `ms_article` atl
 
         left join ms_article_type mat on mat.id = atl.first_type_id
@@ -118,8 +116,6 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
-
-
 
         limit #{start},#{pageSize}
     </select>
@@ -141,8 +137,7 @@
         atl.summary,
         fu.username as username,
         atl.created_by as createdBy,
-        atl.content as content,
-        atl.raw_content as rawContent
+        atl.content as content
         from `ms_article` atl
 
         left join ms_article_type mat on mat.id = atl.first_type_id
@@ -156,10 +151,10 @@
             and instr( fu.username,#{username}) > 0
         </if>
         <if test="title != null">
-            and instr( atl.title,#{title}) > 0
+            and atl.title = #{title}
         </if>
         <if test="firstTypeId != null">
-            and instr( atl.first_type_id,#{firstTypeId}) > 0
+            and atl.first_type_id =#{firstTypeId}
         </if>
         <if test="startTime != null">
             and atl.publish_time &lt;= #{startTime}
@@ -188,6 +183,6 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
-
+        limit 0,1
     </select>
 </mapper>

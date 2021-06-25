@@ -1,6 +1,8 @@
 package com.snail.web.modules.quartz.dto.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.snail.web.dto.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +23,7 @@ public class SysJobLog extends BaseEntity
 {
 
 
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long jobLogId;
 
     /** 任务名称 */

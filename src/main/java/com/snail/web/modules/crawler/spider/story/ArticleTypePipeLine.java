@@ -57,19 +57,7 @@ public class ArticleTypePipeLine implements Pipeline<ArticleType> {
 
 		}
 
-		/*String path = "";
-		if (null != this.getRequest() && StringUtils.isNotBlank(this.getRequest().getUrl())) {
-			URI uri;
-			try {
-				uri = new URI(this.getRequest().getUrl());
-			} catch (URISyntaxException e) {
-				return null;
-			}
-			path = uri.getPath().replace("/", "");
 
-		}
-		String firstTypeCode = ArticleConstant.IMFORMATION_CRAWLER_MAP.get(path);
-		return firstTypeCode;*/
 
 	}
 

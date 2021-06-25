@@ -48,7 +48,8 @@
         adv.created_time as createdTime,
         adv.updated_time as updatedTime,
         adv.created_by as createdBy,
-        adv.updated_by as updatedBy
+        adv.updated_by as updatedBy,
+        adv.image_url as imageUrl
         from `advertise` adv
         left join `ms_article_type` atype on atype.id = adv.position_id
         left join `ms_article` ma on ma.id = adv.article_id

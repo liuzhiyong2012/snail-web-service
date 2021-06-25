@@ -4,6 +4,7 @@ import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
 import com.snail.web.constants.ArticleConstant;
+import com.snail.web.constants.BaseConstant;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,9 +18,10 @@ import java.util.Optional;
  * @author Holinc
  */
 @Gecco(matchUrl = {
-		"http://www.weishangshijie.cn/news/",
-		"http://www.weishangshijie.cn/duanzi/",
-		"http://www.weishangshijie.cn/xueyuan/"},
+		BaseConstant.SPIDER_HOST + "/news/",
+		BaseConstant.SPIDER_HOST + "/duanzi/",
+		BaseConstant.SPIDER_HOST + "/xueyuan/",
+		BaseConstant.SPIDER_INDEX_HOST + "/index/"},
 		pipelines = "articlePipeLine")
 public class ArticleSpider implements HtmlBean {
 

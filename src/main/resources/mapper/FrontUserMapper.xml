@@ -31,12 +31,23 @@
     </select>
 
     <select id="count" resultType="java.lang.Integer">
-            select count(1) from `front_user`
-            where 1=1 and  is_deleted != 1
-
-            <if test="phone != null">
-                and phone !=#{phone}
-            </if>
+            select count(1)  from `front_user` us
+        where 1=1 and is_deleted != 1
+        <if test="username != null">
+            and instr( us.username,#{username}) > 0
+        </if>
+        <if test="phone != null">
+            and instr(us.phone,#{phone}) > 0
+        </if>
+        <if test="email != null">
+            and instr(us.email,#{email}) > 0
+        </if>
+        <if test="status != null">
+            and us.status = #{status}
+        </if>
+        <if test="roleType != null">
+            and us.role_type = #{roleType}
+        </if>
     </select>
 
 

@@ -3,11 +3,12 @@ package com.snail.web.modules.crawler.spider.story;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
+import com.snail.web.constants.BaseConstant;
 
 /**
  * @author Holinc
  */
-@Gecco(matchUrl = {"http://www.weishangshijie.cn/{subArticleType}/"},pipelines = "articleTypePipeLine")
+@Gecco(matchUrl = {BaseConstant.SPIDER_HOST +"/{subArticleType}/"},pipelines = "articleTypePipeLine")
 public class ArticleType implements HtmlBean {
 
 	@Request

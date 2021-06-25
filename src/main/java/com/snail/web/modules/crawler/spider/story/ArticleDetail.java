@@ -3,10 +3,11 @@ package com.snail.web.modules.crawler.spider.story;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
+import com.snail.web.constants.BaseConstant;
 
 import java.util.Date;
 
-@Gecco(matchUrl = "http://www.weishangshijie.cn/{subType}/{page}.html",
+@Gecco(matchUrl = BaseConstant.SPIDER_HOST + "/{subType}/{page}.html",
 		pipelines = "articleDetailPipeLine", timeout = 1000)
 public class ArticleDetail implements HtmlBean {
 
@@ -77,15 +78,15 @@ public class ArticleDetail implements HtmlBean {
 	/**
 	 * 正文
 	 */
-	@Text(own = false)
+	/*@Text(own = false)
 	@HtmlField(cssPath = "#font_content_n")
-	private String content;
+	private String content;*/
 
 	/**
 	 * 正文（带格式）
 	 */
 	@HtmlField(cssPath = "#font_content_n")
-	private String rawContent;
+	private String content;
 
 
 	public HttpRequest getRequest() {
@@ -169,12 +170,6 @@ public class ArticleDetail implements HtmlBean {
 		this.content = content;
 	}
 
-	public String getRawContent() {
-		return rawContent;
-	}
-
-	public void setRawContent(String rawContent) {
-		this.rawContent = rawContent;
-	}
+	
 
 }

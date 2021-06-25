@@ -3,6 +3,8 @@ package com.snail.web.modules.article.dto.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.snail.web.dto.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,15 +22,18 @@ public class Article extends BaseRequest {
 	private String title;
 
 	@TableField("article_id")
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long articleId;
 
 	@TableField("first_type_id")
-	private long firstTypeId;
+	@JsonSerialize(using = ToStringSerializer.class)
+	private Long firstTypeId;
 
 
 
 	@TableField("second_type_id")
-	private long secondTypeId;
+	@JsonSerialize(using = ToStringSerializer.class)
+	private Long secondTypeId;
 
 	private String source;
 
@@ -36,6 +41,7 @@ public class Article extends BaseRequest {
 	private String isDeleted;
 
 	@TableField("publish_time")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date publishTime;
 
 	private String summary;
@@ -45,9 +51,6 @@ public class Article extends BaseRequest {
 
 	private String content;
 
-	@TableField("raw_content")
-	private String rawContent;
-
 	@TableField("link_url")
 	private String linkUrl;
 
@@ -56,6 +59,7 @@ public class Article extends BaseRequest {
 	private String type;
 
 	@TableField(exist = false)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long userId;
 
 	@TableField(exist = false)

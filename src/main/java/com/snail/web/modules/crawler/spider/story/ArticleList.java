@@ -3,6 +3,7 @@ package com.snail.web.modules.crawler.spider.story;
 import com.geccocrawler.gecco.annotation.*;
 import com.geccocrawler.gecco.request.HttpRequest;
 import com.geccocrawler.gecco.spider.HtmlBean;
+import com.snail.web.constants.BaseConstant;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Holinc
  */
 @Gecco(matchUrl = {
-		"http://www.weishangshijie.cn/{subArticleType}_{page}/"},pipelines = "articleListPipeLine", timeout = 1000)
+		BaseConstant.SPIDER_HOST +"/{subArticleType}_{page}/"},pipelines = "articleListPipeLine", timeout = 1000)
 public class ArticleList implements HtmlBean {
 
 	@Request
