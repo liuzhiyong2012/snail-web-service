@@ -49,6 +49,9 @@ public class Article extends BaseRequest {
 	@TableField("image_url")
 	private String imageUrl;
 
+	@TableField("content_text")
+	private String contentText;
+
 	private String content;
 
 	@TableField("link_url")
@@ -84,6 +87,10 @@ public class Article extends BaseRequest {
 
 	@TableField(exist = false)
 	private String secondTypeCode;
+
+	@TableField(exist = false)
+	private String keyWord;
+
 
 
 

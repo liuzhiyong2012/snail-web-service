@@ -12,7 +12,10 @@
         left join ms_article_type mat2 on mat2.id = atl.second_type_id
         left join front_user fu on fu.id = atl.created_by
         where 1=1 and atl.is_deleted != 1
-        <if test = " id != null">
+        <if test = "keyWord != null">
+            and instr( atl.title,#{keyWord}) > 0 or  instr( atl.content,#{keyWord}) > 0
+        </if>
+        <if test = " id != null ">
             and atl.id = #{id}
         </if>
         <if test="username != null">
@@ -21,8 +24,17 @@
         <if test="title != null">
             and instr( atl.title,#{title}) > 0
         </if>
+        <if test="content != null">
+            and instr( atl.content,#{content}) > 0
+        </if>
+        <if test="contentText != null">
+            and instr( atl.content_text,#{contentText}) > 0
+        </if>
         <if test="firstTypeId != null">
             and instr( atl.first_type_id,#{firstTypeId}) > 0
+        </if>
+        <if test="secondTypeId != null">
+            and  atl.second_type_id = #{secondTypeId}
         </if>
         <if test="startTime != null">
             and atl.publish_time &lt;= #{startTime}
@@ -51,6 +63,10 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
+
+
+
+
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.entity.Article">
@@ -70,13 +86,17 @@
         atl.summary,
         fu.username as username,
         atl.created_by as createdBy,
-        atl.content as content
+        atl.content as content,
+        atl.content_text as contentText
         from `ms_article` atl
 
         left join ms_article_type mat on mat.id = atl.first_type_id
         left join ms_article_type mat2 on mat2.id = atl.second_type_id
         left join front_user fu on fu.id = atl.created_by
         where 1=1 and atl.is_deleted != 1
+        <if test = "keyWord != null">
+            and instr( atl.title,#{keyWord}) > 0 or  instr( atl.content,#{keyWord}) > 0
+        </if>
         <if test = " id != null ">
             and atl.id = #{id}
         </if>
@@ -86,8 +106,17 @@
         <if test="title != null">
             and instr( atl.title,#{title}) > 0
         </if>
+        <if test="content != null">
+            and instr( atl.content,#{content}) > 0
+        </if>
+        <if test="contentText != null">
+            and instr( atl.content_text,#{contentText}) > 0
+        </if>
         <if test="firstTypeId != null">
             and instr( atl.first_type_id,#{firstTypeId}) > 0
+        </if>
+        <if test="secondTypeId != null">
+            and  atl.second_type_id = #{secondTypeId}
         </if>
         <if test="startTime != null">
             and atl.publish_time &lt;= #{startTime}
@@ -137,7 +166,8 @@
         atl.summary,
         fu.username as username,
         atl.created_by as createdBy,
-        atl.content as content
+        atl.content as content,
+        atl.content_text as contentText
         from `ms_article` atl
 
         left join ms_article_type mat on mat.id = atl.first_type_id
@@ -169,6 +199,12 @@
 
         <if test="endTime != null">
             and atl.publish_time &gt;= #{endTime}
+        </if>
+        <if test="content != null">
+            and instr( atl.content,#{content}) > 0
+        </if>
+        <if test="contentText != null">
+            and instr( atl.content_text,#{contentText}) > 0
         </if>
 
         <if test = "firstTypeName != null">

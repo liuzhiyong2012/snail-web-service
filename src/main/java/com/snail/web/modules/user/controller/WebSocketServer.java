@@ -17,8 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author zhengkai.blog.csdn.net
  */
-@ServerEndpoint("/imserver/{userId}")
-@Component
+/*@ServerEndpoint("/imserver/{userId}")
+@Component*/
 public class WebSocketServer {
 
     static Log log=LogFactory.get(WebSocketServer.class);

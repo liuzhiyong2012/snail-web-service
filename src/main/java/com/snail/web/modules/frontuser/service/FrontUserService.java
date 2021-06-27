@@ -16,6 +16,10 @@ public interface FrontUserService extends IService<FrontUser> {
     public BaseResponse insert(FrontUserRequest frontUserRequest, String userId);
 
     public BaseResponse login(FrontUser frontUser, HttpServletRequest request) ;
+
+    public BaseResponse resetPassWord(FrontUserRequest frontUserRequest, String userId) ;
+
+
     /*public void doHeartBeat();
 
     public Integer getRoleWeight(String userId);

@@ -75,12 +75,20 @@ public class ArticleDetail implements HtmlBean {
 
 	private String secondTypeCode;
 
+	public String getContentText() {
+		return contentText;
+	}
+
+	public void setContentText(String contentText) {
+		this.contentText = contentText;
+	}
+
 	/**
 	 * 正文
 	 */
-	/*@Text(own = false)
+@Text(own = false)
 	@HtmlField(cssPath = "#font_content_n")
-	private String content;*/
+	private String contentText;
 
 	/**
 	 * 正文（带格式）
@@ -170,6 +178,6 @@ public class ArticleDetail implements HtmlBean {
 		this.content = content;
 	}
 
-	
+
 
 }

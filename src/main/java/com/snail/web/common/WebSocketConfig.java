@@ -8,7 +8,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * 开启WebSocket支持
  * @author zhengkai.blog.csdn.net
  */
-@Configuration
+//@Configuration
 public class WebSocketConfig {
 
     @Bean

@@ -1,5 +1,7 @@
 package com.snail.web.modules.crawler.spider;
 
+import com.geccocrawler.gecco.GeccoEngine;
+import com.geccocrawler.gecco.spring.SpringGeccoEngine;
 import com.snail.web.modules.crawler.spider.story.ArticleDetailPipeLine;
 import com.snail.web.modules.crawler.spider.story.ArticleListPipeLine;
 import com.snail.web.modules.crawler.spider.story.ArticlePipeLine;
@@ -13,15 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CrawlerConfigure {
 
-//	@Bean(name = "newsListPipeline")
-////	public NewsListPipeline newsListPipeline() {
-////		return new NewsListPipeline();
-////	}
-////
-////	@Bean(name = "newsDetailPipeline")
-////	public NewsDetailPipeline newsDetailPipeline() {
-//		return new NewsDetailPipeline();
-//	}
 
 	@Bean(name = "articlePipeLine")
 	public ArticlePipeLine articlePipeLine() {
@@ -53,13 +46,14 @@ public class CrawlerConfigure {
 				GeccoEngine.create()
 						.pipelineFactory(springPipelineFactory)
 						.classpath("com.snail.web.modules.crawler.spider")
-						.seed("http://www.weishangshijie.cn/news/")
+						*//*.seed("http://www.weishangshijie.cn/news/")
 						.seed("http://www.weishangshijie.cn/duanzi/")
 						.seed("http://www.weishangshijie.cn/xueyuan/")
-						.seed("http://www.weishangshijie.cn/xueyuan/")
-						.thread(3)
-						.interval(300000000)
- 					    .debug(true)
+						.seed("http://www.weishangshijie.cn/xueyuan/")*//*
+						.seed("http://weishangshijie.204m.com/index/")
+						.thread(1)
+						.interval(1000)
+ 					    .debug(false)
 						.loop(false)
 					//	.stop()
 						.start();

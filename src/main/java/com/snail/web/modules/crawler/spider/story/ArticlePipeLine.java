@@ -33,7 +33,7 @@ public class ArticlePipeLine implements Pipeline<ArticleSpider> {
 
 	@Override
 	public void process(ArticleSpider bean) {
-		log.info("11111111111111111111111111......");
+
 		this.parse(bean);
 		//articleTypeService.saveArticleType(bean);
 		String firstTypeCode = bean.getFirstTypeCode();
@@ -56,6 +56,7 @@ public class ArticlePipeLine implements Pipeline<ArticleSpider> {
 			para.put("firstTypeCode",firstTypeCode);
 			para.put("secondTypeCode",secondTypeCode);
 			nextRequest.setParameters(para);
+			log.info("111111111:nextUrl:" + nextUrl);
 			SchedulerContext.into(nextRequest);
 		}
 

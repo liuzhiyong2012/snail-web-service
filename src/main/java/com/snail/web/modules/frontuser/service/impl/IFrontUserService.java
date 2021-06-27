@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.snail.web.constants.BaseConstant;
+import com.snail.web.constants.UserConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.frontuser.dto.entity.FrontUser;
@@ -17,6 +18,7 @@ import com.snail.web.utils.ResponseUtils;
 import com.snail.web.utils.SessionUtils;
 import com.snail.web.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +34,9 @@ import java.util.Map;
 public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> implements FrontUserService {
 
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Autowired
     private FrontUserService frontUserService;
 
@@ -75,29 +78,86 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
     }
 
     @Override
+    public BaseResponse resetPassWord(FrontUserRequest frontUserRequest, String userId)
+    {
+        String err = frontUserRequest.validDate();
+        if(!StringUtils.isEmptyStr(err)){
+            return ResponseUtils.errorMsg(err);
+        }
+
+        //校验验证码
+        String redisKey = UserConstants.REDIS_RESET_PASS_PREFIX + frontUserRequest.getPhone();
+        //String validateCode = (String)redisTemplate.opsForValue().get(redisKey);
+        /*if((null == validateCode) || validateCode.equals("")){
+            return ResponseUtils.errorMsg("验证码已经超时,请重新发送");
+        }
+
+        if(!validateCode.equals(frontUserRequest.getCode())){
+            return ResponseUtils.errorMsg("验证码错误!");
+        }
+
+        if(StringUtils.isEmptyStr(frontUserRequest.getPassword())){
+            return ResponseUtils.errorMsg("密码不能为空");
+        }*/
+
+        EntityWrapper<FrontUser> wrapper = new EntityWrapper<FrontUser>();
+        wrapper.eq("phone",frontUserRequest.getPhone());
+        FrontUser u = new FrontUser();
+        u.setUsername(frontUserRequest.getUsername());
+        if(!StringUtils.isEmptyStr(frontUserRequest.getPassword())){
+            u.setPassword(frontUserRequest.getPassword());
+        }
+
+        u.setUpdatedBy(UserConstants.ADMIN_USER_ID);
+        u.setUpdatedTime(new Date());
+        this.baseMapper.update(u,wrapper);
+        return ResponseUtils.success();
+    }
+
+    @Override
     public BaseResponse insert(FrontUserRequest userRequest, String userId) {
         String err = userRequest.validDate();
         if(!StringUtils.isEmptyStr(err)){
             return ResponseUtils.errorMsg(err);
         }
+
+        //校验验证码
+       /* String redisKey = UserConstants.REDIS_REGISTER_PREFIX + userRequest.getPhone();
+        String validateCode = (String)redisTemplate.opsForValue().get(redisKey);
+        if((null == validateCode) || validateCode.equals("")){
+            return ResponseUtils.errorMsg("验证码已经超时,请重新发送");
+        }
+
+        if(!validateCode.equals(userRequest.getCode())){
+            return ResponseUtils.errorMsg("验证码错误!");
+        }*/
+
         if(StringUtils.isEmptyStr(userRequest.getPassword())){
             return ResponseUtils.errorMsg("密码不能为空");
         }
-        Integer count = this.baseMapper.count(userRequest);
+
+
+
+        FrontUserRequest frontUserRequest = new FrontUserRequest();
+        frontUserRequest.setPhone(userRequest.getPhone());
+        Integer count = this.baseMapper.count(frontUserRequest);
+
         if(count>0){
-            err = "用户名已存在";
+            err = "该手机号已注册";
             return ResponseUtils.errorMsg(err);
         }
+
+
         FrontUser  u = new FrontUser();
         u.setId(IdWorker.getId());
-        u.setUsername(userRequest.getUsername());
+        u.setStatus("1");
+        u.setPhone(userRequest.getPhone());
         u.setName(userRequest.getName());
         u.setPassword(userRequest.getPassword());
-        //u.setCreatedBy(Long.parseLong(userId));
+        u.setCreatedBy(u.getId());
         u.setCreatedTime(new Date());
         u.setRoleType(userRequest.getRoleType());
-        //u.setUpdatedBy(Long.parseLong(userId));
-        u.setUpdatedTime(new Date());
+
         this.baseMapper.insert(u);
         return ResponseUtils.success();
     }
@@ -121,12 +181,12 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
     @Override
     public BaseResponse login(FrontUser frontUser, HttpServletRequest request) {
 
-        if (StringUtils.isEmptyStr(frontUser.getUsername()) || StringUtils.isEmptyStr(frontUser.getPassword())) {
-            return ResponseUtils.errorMsg("请输入用户名或密码");
+        if (StringUtils.isEmptyStr(frontUser.getPhone()) || StringUtils.isEmptyStr(frontUser.getPassword())) {
+            return ResponseUtils.errorMsg("请输入手机号或密码");
         }
 
         EntityWrapper ew = new EntityWrapper();
-        ew.eq("username", frontUser.getUsername());
+        ew.eq("phone", frontUser.getPhone());
 
         List<FrontUser> users = this.baseMapper.selectList(ew);
         if (users == null || users.size() == 0) {
@@ -135,6 +195,10 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
         if (!users.get(0).getPassword().equals(frontUser.getPassword())) {
             return ResponseUtils.errorMsg("密码错误");
+        }
+
+        if (users.get(0).getStatus().equals("2")) {
+            return ResponseUtils.errorMsg("该账号已被冻结,请联系管理员！");
         }
 
 //        HashMap<String, String> map = new HashMap<>();

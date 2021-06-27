@@ -23,7 +23,8 @@ public class ArticleList implements HtmlBean {
 	@RequestParameter(value = "page")
 	private Integer page;
 
-	@HtmlField(cssPath = "body > div.content > div.nzlist_l > div.news_list > ul > li")
+	//@HtmlField(cssPath = "body > div.content > div.nzlist_l > div.news_list > ul > li")
+	@HtmlField(cssPath = "body > div.content > div.nzlist_l > div > ul > li")
 	private List<Item> articleList;
 
 	public HttpRequest getRequest() {
@@ -62,8 +63,20 @@ public class ArticleList implements HtmlBean {
 	public static class Item implements HtmlBean {
 
 		@Href(click = false)
-		@HtmlField(cssPath = ".tit a")
+		@HtmlField(cssPath = ".wwkk3 > a")
 		private String url;
+
+		public String getUrl1() {
+			return url1;
+		}
+
+		public void setUrl1(String url1) {
+			this.url1 = url1;
+		}
+
+		@Href(click = false)
+		@HtmlField(cssPath = ".tit a")
+		private String url1;
 
 		@Text
 		@HtmlField(cssPath = ".tit a")
@@ -82,7 +95,7 @@ public class ArticleList implements HtmlBean {
 		}
 
 		@Image
-		@HtmlField(cssPath = ".h_l >a >img")
+		@HtmlField(cssPath = "img")
 		private String imageUrl;
 
 		public String getUrl() {

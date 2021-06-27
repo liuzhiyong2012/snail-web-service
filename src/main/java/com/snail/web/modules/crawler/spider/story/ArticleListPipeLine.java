@@ -24,7 +24,7 @@ public class ArticleListPipeLine implements Pipeline<ArticleList> {
 
 	@Override
 	public void process(ArticleList bean) {
-		log.info("333333333333333333......");
+		//log.info("333333333333333333......");
 
 		List<ArticleList.Item> arleList = bean.getArticleList();
 		for(ArticleList.Item item:arleList){
@@ -38,14 +38,19 @@ public class ArticleListPipeLine implements Pipeline<ArticleList> {
 
 
 
-			String nextUrl = item.getUrl();
+			String nextUrl = "";
+			if(null == item.getUrl()||"".equals(item.getUrl())){
+				nextUrl = item.getUrl1();
+			}else{
+				nextUrl = item.getUrl();
+			}
 
 			HttpRequest nextRequest = currRequest.subRequest(nextUrl);
 			Map para = new HashMap<String,String>();
 			para.put("fisrtTypeCode",firstTypeCode);
 			para.put("secondTypeCode",secondTypeCode);
 			para.put("imageUrl",item.getImageUrl());
-
+			log.info("333333333:nextUrl:" + nextUrl);
 			nextRequest.setParameters(para);
 			SchedulerContext.into(nextRequest);
 		}

@@ -24,7 +24,7 @@ public class ArticleTypePipeLine implements Pipeline<ArticleType> {
 
 	@Override
 	public void process(ArticleType bean) {
-		log.info("222222222222222222222222222222222222......");
+
 		String NumberStr = bean.getPage().replaceAll("条","");
 		int pageNumber = Integer.parseInt(NumberStr) ;
 		int totalMPage = Math.min(BaseConstant.SPIDER_MAX_PAGE,pageNumber);
@@ -45,13 +45,13 @@ public class ArticleTypePipeLine implements Pipeline<ArticleType> {
 
 			String path = uri.getPath();
 			String host = uri.getHost();
-			String nextUrl =uri.getScheme() + "://" + host + "/" + secondTypeCode + "_"+ totalMPage + "/";
+			String nextUrl =uri.getScheme() + "://" + host + "/" + secondTypeCode + "_"+ (i + 1) + "/";
 
 			HttpRequest nextRequest = currRequest.subRequest(nextUrl);
 			Map para = new HashMap<String,String>();
 			para.put("fisrtTypeCode",firstTypeCode);
 			para.put("secondTypeCode",secondTypeCode);
-
+			log.info("222222222:nextUrl:" + nextUrl);
 			nextRequest.setParameters(para);
 			SchedulerContext.into(nextRequest);
 

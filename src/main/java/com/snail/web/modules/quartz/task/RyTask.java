@@ -67,7 +67,7 @@ public class RyTask
                 .seed("http://www.weishangshijie.cn/duanzi/")
                 .seed("http://www.weishangshijie.cn/xueyuan/")
                 .seed("http://weishangshijie.204m.com/index/")
-                .thread(4)
+                .thread(3)
                 //* .interval(300000000)*//*
                 .debug(false)
                 .loop(false)

@@ -2,6 +2,8 @@ package com.snail.web.modules.article.dto.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.snail.web.dto.BaseRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,6 +51,7 @@ public class ArticleType extends BaseRequest {
 	 * 父类别ID
 	 */
 	@TableField("parent_id")
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long parentId;
 
 	@TableField("is_deleted")
@@ -61,6 +64,10 @@ public class ArticleType extends BaseRequest {
 
 	@TableField(exist = false)
 	private String parentType;
+
+	@TableField(exist = false)
+	private String parentName;
+
 
 
 

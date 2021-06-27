@@ -125,6 +125,7 @@ public class ISpiderService  implements SpiderService {
             inserEntity.setSummary(articleDetail.getSummary());
             inserEntity.setImageUrl(articleDetail.getImageUrl());
             inserEntity.setContent(articleDetail.getContent());
+            inserEntity.setContentText(articleDetail.getContentText());
             inserEntity.setType(ArticleConstant.ARTICLCE_TYPE_TEXT);
 
             inserEntity.setStatus( DtoConstants.STATUS_NORMAL);
@@ -144,6 +145,7 @@ public class ISpiderService  implements SpiderService {
             updateEntity.setSummary(articleDetail.getSummary());
             updateEntity.setImageUrl(articleDetail.getImageUrl());
             updateEntity.setContent(articleDetail.getContent());
+            updateEntity.setContentText(articleDetail.getContentText());
             updateEntity.setUpdatedBy(UserConstants.ADMIN_USER_ID);
             updateEntity.setUpdatedTime(new Date());
             articleMapper.update(updateEntity,wrapper);

@@ -40,7 +40,11 @@
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.entity.ArticleType">
-        select atype.id, atype.name,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,atype.parent_id as parentId,atype.created_time as createdTime, atype.updated_time as updatedTime
+        select atype.id, atype.name,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,
+        atype.parent_id as parentId,
+        patype.code as parentCode,
+        patype.name as parentName,
+        atype.created_time as createdTime, atype.updated_time as updatedTime
         from `ms_article_type` atype
         left join  `ms_article_type` patype on atype.parent_id = patype.id
         where 1=1 and atype.is_deleted != 1
