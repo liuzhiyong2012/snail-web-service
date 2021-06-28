@@ -3,12 +3,14 @@ package com.snail.web.modules.advertise.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.snail.web.constants.DtoConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.advertise.dto.entity.Advertise;
+import com.snail.web.modules.advertise.dto.entity.AdvertisePosition;
 import com.snail.web.modules.advertise.mapper.AdvertiseMapper;
+import com.snail.web.modules.advertise.mapper.AdvertisePositionMapper;
 import com.snail.web.modules.advertise.service.AdvertiseService;
-import com.snail.web.modules.article.dto.entity.ArticleType;
 import com.snail.web.modules.article.mapper.ArticleTypeMapper;
 import com.snail.web.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         @Autowired
         ArticleTypeMapper articleTypeMapper;
 
+    @Autowired
+    AdvertisePositionMapper advertisePositionMapper;
+
 
         @Override
         public BaseResponse insert(Advertise advertise, String userId) {
@@ -37,32 +42,32 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
 
     @Override
     public BaseResponse getAllUsingAdvertises(Advertise advertise, String userId){
-        ArticleType ArticleTypeQuery = new ArticleType();
-        ArticleTypeQuery.setStatus("1");
-        ArticleTypeQuery.setPageNumber(1);
-        ArticleTypeQuery.setPageSize(1000);
-        ArticleTypeQuery.setParentCode("advertisePosition");
+        AdvertisePosition advertisePositionQuery = new AdvertisePosition();
+        advertisePositionQuery.setStatus(DtoConstants.STATUS_NORMAL);
+        advertisePositionQuery.setPageNumber(1);
+        advertisePositionQuery.setPageSize(1000);
 
 
-        List<ArticleType> articleTypeList = articleTypeMapper.page(ArticleTypeQuery);
+
+        List<AdvertisePosition> advertisePositionList = advertisePositionMapper.page(advertisePositionQuery);
+
         Map<String, Map> map = new HashMap<String,Map>();
-
         Advertise advertiseQuery = new Advertise();
-
         advertiseQuery.setStatus("1");
         advertiseQuery.setPageNumber(1);
         advertiseQuery.setPageSize(1000);
 
 
-        for(int i = 0; i < articleTypeList.size(); i++){
-            ArticleType articleType = articleTypeList.get(i);
-            advertiseQuery.setPositionId(articleType.getId());
+        for(int i = 0; i < advertisePositionList.size(); i++){
+            AdvertisePosition advertisePosition = advertisePositionList.get(i);
+            advertiseQuery.setPositionId(advertisePosition.getId());
             List<Advertise> advertiseList= this.baseMapper.page(advertiseQuery);
 
             Map typeMap = new HashMap<String,Object>();
-            typeMap.put("params",articleType.getParam());
+            typeMap.put("row",advertisePosition.getRow());
+            typeMap.put("column",advertisePosition.getColumn());
             typeMap.put("list",advertiseList);
-            map.put(articleType.getCode(),typeMap);
+            map.put(advertisePosition.getCode(),typeMap);
         }
         return ResponseUtils.convert(map);
     }

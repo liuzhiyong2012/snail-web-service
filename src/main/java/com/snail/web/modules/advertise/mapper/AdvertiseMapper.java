@@ -12,4 +12,5 @@ public interface AdvertiseMapper extends BaseMapper<Advertise> {
     List<Advertise> page(Advertise advertise);
     void deleteRecord(Advertise advertise);
 
+
 }

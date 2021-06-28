@@ -1,10 +1,16 @@
 package com.snail.web.modules.quartz.task;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.geccocrawler.gecco.GeccoEngine;
 import com.geccocrawler.gecco.pipeline.PipelineFactory;
+import com.snail.web.constants.DtoConstants;
+import com.snail.web.modules.advertise.dto.entity.Advertise;
+import com.snail.web.modules.advertise.mapper.AdvertiseMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 定时任务调度测试
@@ -19,6 +25,8 @@ public class RyTask
      */
     @Resource//(name="springPipelineFactory")
     private PipelineFactory springPipelineFactory;
+
+    private AdvertiseMapper advertiseMapper;
 
     public void allocateTask(){
 
@@ -57,9 +65,9 @@ public class RyTask
         System.out.println("======================taskTimeoutWarning========================");
     }
 
-    public void  test(){
+    public void  spider(){
         System.out.println("======================test========================");
-        //PipelineFactory springPipelineFactory;
+
         GeccoEngine.create()
                 .pipelineFactory(springPipelineFactory)
                 .classpath("com.snail.web.modules.crawler.spider")
@@ -73,6 +81,31 @@ public class RyTask
                 .loop(false)
                 //	.stop()
                 .start();
+
+
+    }
+    //校验用户的广告是否过期。
+    public void  checkAdvertiseExpire(){
+
+        System.out.println("======================用户日期校验器开始工作========================");
+        EntityWrapper<Advertise> wrapper = new EntityWrapper<Advertise>();
+        wrapper.eq("status", DtoConstants.STATUS_NORMAL);
+        wrapper.eq("is_deleted", DtoConstants.IS_DELETE_NO);
+
+        List<Advertise> advertiseList =  advertiseMapper.selectList(wrapper);
+        Date nowTime = new Date();
+        for(Advertise advertise:advertiseList){
+
+            Date endTime = advertise.getEndTime();
+            if(null!=endTime&&("".equals(endTime))&&nowTime.compareTo(endTime) > 0){
+                advertise.setStatus(DtoConstants.STATUS_PAUSE);
+                advertiseMapper.updateAllColumnById(advertise);
+                System.out.println("=================更新了一条过期记录====================");
+            }
+
+        }
+
+
 
     }
 }

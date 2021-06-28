@@ -8,6 +8,12 @@ public class ArticleConstant {
     public final static String IMFORMATION_CODE="information";
     public final static String SHOP_CODE="shop";
 
+    public final static String ARTICLCE_AUDIT_AUDITING="1";
+    public final static String ARTICLCE_AUDIT_SUCCESS="2";
+    public final static String ARTICLCE_AUDIT_REJECT="3";
+
+
+
     public final static String ARTICLCE_TYPE_TEXT="1";//编辑富文本
     public final static String ARTICLCE_TYPE_LINK="2"; //关联用户的贴子
     public final static String ARTICLCE_TYEP_URL="3";  //输入可访问链接

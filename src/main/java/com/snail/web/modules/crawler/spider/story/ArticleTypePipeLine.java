@@ -36,6 +36,8 @@ public class ArticleTypePipeLine implements Pipeline<ArticleType> {
 			paraMap  =currRequest.getParameters();
 			String firstTypeCode = (String)paraMap.get("firstTypeCode");
 			String secondTypeCode = (String)paraMap.get("secondTypeCode");
+			String secondNextUrl = (String)paraMap.get("secondNextUrl");
+
 			URI uri = null;
 				try {
 					uri  = new URI(currRequest.getUrl());
@@ -45,7 +47,7 @@ public class ArticleTypePipeLine implements Pipeline<ArticleType> {
 
 			String path = uri.getPath();
 			String host = uri.getHost();
-			String nextUrl =uri.getScheme() + "://" + host + "/" + secondTypeCode + "_"+ (i + 1) + "/";
+			String nextUrl =uri.getScheme() + "://" + host + "/" + secondNextUrl + "_"+ (i + 1) + "/";
 
 			HttpRequest nextRequest = currRequest.subRequest(nextUrl);
 			Map para = new HashMap<String,String>();

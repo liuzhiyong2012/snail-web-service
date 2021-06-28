@@ -28,7 +28,7 @@ public class IArticleService extends ServiceImpl<ArticleMapper, Article> impleme
     public BaseResponse insert(Article article, String userId) {
         article.setId(IdWorker.getId());
         article.setIsDeleted("0");
-        article.setCreatedBy(article.getUserId());
+        article.setCreatedBy(article.getCreatedBy());
         article.setUpdatedTime(new Date());
         article.setCreatedTime(new Date());
         this.baseMapper.insert(article);

@@ -37,19 +37,17 @@
             and  atl.second_type_id = #{secondTypeId}
         </if>
         <if test="startTime != null">
-            and atl.publish_time &lt;= #{startTime}
+            and atl.publish_time &gt;= #{startTime}
         </if>
         <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
+            and atl.publish_time &lt;= #{endTime}
         </if>
 
         <if test = "status != null">
             and atl.status = #{status}
         </if>
 
-        <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
-        </if>
+
 
         <if test = "firstTypeName != null">
             and instr(mat.name,#{firstTypeName})
@@ -63,10 +61,9 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
-
-
-
-
+        <if test = "createdBy != null">
+            and atl.created_by = #{createdBy}
+        </if>
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.entity.Article">
@@ -119,20 +116,15 @@
             and  atl.second_type_id = #{secondTypeId}
         </if>
         <if test="startTime != null">
-            and atl.publish_time &lt;= #{startTime}
+            and atl.publish_time &gt;= #{startTime}
         </if>
         <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
+            and atl.publish_time &lt;= #{endTime}
         </if>
 
         <if test = "status != null">
             and atl.status = #{status}
         </if>
-
-        <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
-        </if>
-
         <if test = "firstTypeName != null">
             and instr(mat.name,#{firstTypeName})
         </if>
@@ -145,6 +137,12 @@
         <if test = "secondTypeCode != null">
             and mat2.code = #{secondTypeCode}
         </if>
+
+        <if test = "createdBy != null">
+            and atl.created_by = #{createdBy}
+        </if>
+
+
 
         limit #{start},#{pageSize}
     </select>
@@ -187,18 +185,14 @@
             and atl.first_type_id =#{firstTypeId}
         </if>
         <if test="startTime != null">
-            and atl.publish_time &lt;= #{startTime}
+            and atl.publish_time &gt;= #{startTime}
         </if>
         <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
+            and atl.publish_time  &lt;= #{endTime}
         </if>
 
         <if test = "status != null">
             and atl.status = #{status}
-        </if>
-
-        <if test="endTime != null">
-            and atl.publish_time &gt;= #{endTime}
         </if>
         <if test="content != null">
             and instr( atl.content,#{content}) > 0

@@ -8,12 +8,15 @@
 
 
     <select id="page" resultType="com.snail.web.modules.frontuser.dto.response.FrontUserReponse">
-        select us.id, us.username,us.phone,us.email,us.status,us.role_type as roleType, us.created_time as createdTime
+        select us.id, us.username,us.name,us.phone,us.email,us.status,us.role_type as roleType, us.created_time as createdTime
          from `front_user` us
          where 1=1 and is_deleted != 1
          <if test="username != null">
              and instr( us.username,#{username}) > 0
          </if>
+        <if test="name != null">
+            and instr( us.name,#{name}) > 0
+        </if>
         <if test="phone != null">
             and instr(us.phone,#{phone}) > 0
         </if>
@@ -35,6 +38,9 @@
         where 1=1 and is_deleted != 1
         <if test="username != null">
             and instr( us.username,#{username}) > 0
+        </if>
+        <if test="name != null">
+            and instr( us.name,#{name}) > 0
         </if>
         <if test="phone != null">
             and instr(us.phone,#{phone}) > 0

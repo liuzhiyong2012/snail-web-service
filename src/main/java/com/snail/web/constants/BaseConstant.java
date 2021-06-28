@@ -26,6 +26,8 @@ public class BaseConstant {
 
     public final static String SPIDER_INDEX_HOST = "http://weishangshijie.204m.com";
 
+    public final static String SETTING_FLAG_SETTING = "setting";
+
 
 
 }

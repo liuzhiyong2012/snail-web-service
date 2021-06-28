@@ -62,7 +62,23 @@ public class Advertise extends BaseRequest {
     @TableField("is_deleted")
     private String isDeleted;
 
+
+
     @TableField(exist = false)
     private String articleImageUrl;
+
+    @TableField(exist = false)
+    private String articleTitle;
+
+    @TableField(exist = false)
+    private String articleContentText;
+
+    @TableField(exist = false)
+    private String articleSecondTypeName;
+
+    @TableField("publish_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date  publishTime;
+
 
 }

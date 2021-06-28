@@ -3,6 +3,7 @@ package com.snail.web.modules.crawler.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.snail.web.constants.ArticleConstant;
+import com.snail.web.constants.BaseConstant;
 import com.snail.web.constants.DtoConstants;
 import com.snail.web.constants.UserConstants;
 import com.snail.web.modules.article.dto.entity.Article;
@@ -12,6 +13,8 @@ import com.snail.web.modules.article.mapper.ArticleTypeMapper;
 import com.snail.web.modules.crawler.service.SpiderService;
 import com.snail.web.modules.crawler.spider.story.ArticleDetail;
 import com.snail.web.modules.crawler.spider.story.ArticleSpider;
+import com.snail.web.modules.setting.dto.entity.Setting;
+import com.snail.web.modules.setting.mapper.SettingMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +33,9 @@ public class ISpiderService  implements SpiderService {
     @Autowired
     @Qualifier("articleMapper")
     private ArticleMapper articleMapper;
+
+    @Autowired
+    SettingMapper settingMapper;
 
     @Override
     public void saveArticleType(ArticleSpider articleSpider) {
@@ -66,13 +72,13 @@ public class ISpiderService  implements SpiderService {
                 inserEntity.setSource(DtoConstants.SOURCE_SPIDER);
                 inserEntity.setParam(null);
                 inserEntity.setType(null);
-                inserEntity.setStatus( DtoConstants.STATUS_NORMAL);
+                inserEntity.setStatus(ArticleConstant.ARTICLCE_AUDIT_SUCCESS);
                 inserEntity.setCode(secondTypeCode);
                 inserEntity.setParentId(firstArticleType.getId());
                 inserEntity.setCreatedBy(UserConstants.ADMIN_USER_ID);
                 inserEntity.setCreatedTime(new Date());
                 inserEntity.setIsDeleted(DtoConstants.IS_DELETE_NO);
-
+                updateArticleTypeWebName(inserEntity);
                 articleTypeMapper.insert(inserEntity);
             }else{//更新
                 EntityWrapper<ArticleType> wrapper = new EntityWrapper<ArticleType>();
@@ -82,13 +88,41 @@ public class ISpiderService  implements SpiderService {
                 updateEntity.setName(secondTypeName);
                 updateEntity.setUpdatedBy(UserConstants.ADMIN_USER_ID);
                 updateEntity.setUpdatedTime(new Date());
+                updateArticleTypeWebName(updateEntity);
                 articleTypeMapper.update(updateEntity,wrapper);
-
             }
         }
+    }
 
+    //爬取的内容去除所有的"微商世界网"的字眼
+    public void updateArticleWebName(Article article){
+        //SETTING_FLAG_SETTING
+        Setting settingQuery = new Setting();
+        settingQuery.setFlag(BaseConstant.SETTING_FLAG_SETTING);
+        Setting setting = settingMapper.selectOne(settingQuery);
+        String logoText = setting.getLogoText();
+        String textNeedPlace = "微商世界网";
 
+        String title = article.getTitle().replaceAll(textNeedPlace,logoText);
+        String content = article.getContent().replaceAll(textNeedPlace,logoText);
+        String contentText = article.getContentText().replaceAll(textNeedPlace,logoText);
 
+        article.setTitle(title);
+        article.setContent(content);
+        article.setContentText(contentText);
+    }
+
+    //爬取的内容去除所有的"微商世界网"的字眼
+    public void updateArticleTypeWebName(ArticleType articleType){
+        //SETTING_FLAG_SETTING
+        Setting settingQuery = new Setting();
+        settingQuery.setFlag(BaseConstant.SETTING_FLAG_SETTING);
+        Setting setting = settingMapper.selectOne(settingQuery);
+        String logoText = setting.getLogoText();
+        String textNeedPlace = "微商世界网";
+
+        String name = articleType.getName().replaceAll(textNeedPlace,logoText);
+        articleType.setName(name);
     }
 
     @Override
@@ -128,12 +162,13 @@ public class ISpiderService  implements SpiderService {
             inserEntity.setContentText(articleDetail.getContentText());
             inserEntity.setType(ArticleConstant.ARTICLCE_TYPE_TEXT);
 
-            inserEntity.setStatus( DtoConstants.STATUS_NORMAL);
+            inserEntity.setStatus(ArticleConstant.ARTICLCE_AUDIT_SUCCESS);
             inserEntity.setLinkUrl(null);
             inserEntity.setCreatedBy(UserConstants.ADMIN_USER_ID);
             inserEntity.setCreatedTime(new Date());
 
             inserEntity.setIsDeleted(DtoConstants.IS_DELETE_NO);
+            updateArticleWebName(inserEntity);
             articleMapper.insert(inserEntity);
         }else{//更新
             EntityWrapper<Article> wrapper = new EntityWrapper<Article>();
@@ -148,6 +183,7 @@ public class ISpiderService  implements SpiderService {
             updateEntity.setContentText(articleDetail.getContentText());
             updateEntity.setUpdatedBy(UserConstants.ADMIN_USER_ID);
             updateEntity.setUpdatedTime(new Date());
+            updateArticleWebName(updateEntity);
             articleMapper.update(updateEntity,wrapper);
         }
 

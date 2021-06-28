@@ -7,6 +7,7 @@
     <update id="updateSetting">
         update setting set content = #{content},
          flag = #{flag},
+         warning_text = #{warningText},
          logo_text = #{logoText},
          keywords = #{keywords},
          protocal = #{protocal},
@@ -21,6 +22,7 @@
         select id,
         content,
         flag,
+        warning_text as warningText,
         logo_text as logoText,
         keywords,
         protocal,

@@ -23,6 +23,10 @@ public class FrontUser implements Serializable {
 	private String name;
 
 	private String phone;
+
+	@TableField("is_deleted")
+	private String isDeleted;
+
 	private String email;
 	private String status;
 

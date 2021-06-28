@@ -20,6 +20,10 @@ public class Setting extends BaseEntity {
 	@TableField("logo_text")
 	private String logoText;
 
+	@TableField("warning_text")
+	private String warningText;
+
+
 
 	private String keywords;
 

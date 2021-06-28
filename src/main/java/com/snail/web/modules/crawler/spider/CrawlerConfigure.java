@@ -1,7 +1,5 @@
 package com.snail.web.modules.crawler.spider;
 
-import com.geccocrawler.gecco.GeccoEngine;
-import com.geccocrawler.gecco.spring.SpringGeccoEngine;
 import com.snail.web.modules.crawler.spider.story.ArticleDetailPipeLine;
 import com.snail.web.modules.crawler.spider.story.ArticleListPipeLine;
 import com.snail.web.modules.crawler.spider.story.ArticlePipeLine;
@@ -46,12 +44,12 @@ public class CrawlerConfigure {
 				GeccoEngine.create()
 						.pipelineFactory(springPipelineFactory)
 						.classpath("com.snail.web.modules.crawler.spider")
-						*//*.seed("http://www.weishangshijie.cn/news/")
+						//*.seed("http://www.weishangshijie.cn/news/")
 						.seed("http://www.weishangshijie.cn/duanzi/")
+						//.seed("http://www.weishangshijie.cn/xueyuan/")
 						.seed("http://www.weishangshijie.cn/xueyuan/")
-						.seed("http://www.weishangshijie.cn/xueyuan/")*//*
-						.seed("http://weishangshijie.204m.com/index/")
-						.thread(1)
+						//.seed("http://weishangshijie.204m.com/index/")
+						.thread(2)
 						.interval(1000)
  					    .debug(false)
 						.loop(false)

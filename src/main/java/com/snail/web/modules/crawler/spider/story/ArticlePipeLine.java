@@ -50,11 +50,12 @@ public class ArticlePipeLine implements Pipeline<ArticleSpider> {
 			//@Waring:对于贴子一类的东西需要特殊处理
 			String secondTypeCode = firstTypeCode.equals("shop")?item.getCode(): bean.getSecondTypeCode();
 			HttpRequest currRequest = bean.getRequest();
-
+            String secondNextUrl = item.getCode();
 			HttpRequest nextRequest = currRequest.subRequest(nextUrl);
 			Map para = new HashMap<String,String>();
 			para.put("firstTypeCode",firstTypeCode);
 			para.put("secondTypeCode",secondTypeCode);
+			  para.put("secondNextUrl",secondNextUrl);
 			nextRequest.setParameters(para);
 			log.info("111111111:nextUrl:" + nextUrl);
 			SchedulerContext.into(nextRequest);

@@ -13,9 +13,13 @@ import com.snail.web.utils.AliyunSmsUtils;
 import com.snail.web.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -38,7 +42,7 @@ public class FrontUserController {
        // HttpSession session = request.getSession();
        //  AliyunSmsUtils smsUtil = new AliyunSmsUtils();
        // smsUtil.sendMessage("13580415609","123123");
-        return frontUserService.login(frontUser,request);
+        return frontUserService.login(frontUser, request);
     }
 
     @Auth
@@ -60,7 +64,7 @@ public class FrontUserController {
             redisKey = UserConstants.REDIS_RESET_PASS_PREFIX + phone;
         }
         String code = (int) ((Math.random() * 9 + 1) * 100000) + "";
-        //redisTemplate.opsForValue().set(redisKey,code);
+        redisTemplate.opsForValue().set(redisKey,code,UserConstants.VALIDATE_EXPIRE_TIME , TimeUnit.SECONDS);
         AliyunSmsUtils smsUtil = new AliyunSmsUtils();
         smsUtil.sendMessage(phone,code);
         return ResponseUtils.success();

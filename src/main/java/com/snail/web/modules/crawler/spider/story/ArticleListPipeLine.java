@@ -39,11 +39,11 @@ public class ArticleListPipeLine implements Pipeline<ArticleList> {
 
 
 			String nextUrl = "";
-			if(null == item.getUrl()||"".equals(item.getUrl())){
-				nextUrl = item.getUrl1();
-			}else{
+			nextUrl = item.getUrl1();
+			if(null == nextUrl||"".equals(nextUrl)){
 				nextUrl = item.getUrl();
 			}
+
 
 			HttpRequest nextRequest = currRequest.subRequest(nextUrl);
 			Map para = new HashMap<String,String>();

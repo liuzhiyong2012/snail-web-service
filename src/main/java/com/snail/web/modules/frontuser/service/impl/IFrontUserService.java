@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
 import com.snail.web.constants.BaseConstant;
+import com.snail.web.constants.DtoConstants;
 import com.snail.web.constants.UserConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
@@ -87,8 +88,8 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
         //校验验证码
         String redisKey = UserConstants.REDIS_RESET_PASS_PREFIX + frontUserRequest.getPhone();
-        //String validateCode = (String)redisTemplate.opsForValue().get(redisKey);
-        /*if((null == validateCode) || validateCode.equals("")){
+        String validateCode = (String)redisTemplate.opsForValue().get(redisKey);
+        if((null == validateCode) || validateCode.equals("")){
             return ResponseUtils.errorMsg("验证码已经超时,请重新发送");
         }
 
@@ -98,7 +99,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
         if(StringUtils.isEmptyStr(frontUserRequest.getPassword())){
             return ResponseUtils.errorMsg("密码不能为空");
-        }*/
+        }
 
         EntityWrapper<FrontUser> wrapper = new EntityWrapper<FrontUser>();
         wrapper.eq("phone",frontUserRequest.getPhone());
@@ -122,7 +123,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         }
 
         //校验验证码
-       /* String redisKey = UserConstants.REDIS_REGISTER_PREFIX + userRequest.getPhone();
+        String redisKey = UserConstants.REDIS_REGISTER_PREFIX + userRequest.getPhone();
         String validateCode = (String)redisTemplate.opsForValue().get(redisKey);
         if((null == validateCode) || validateCode.equals("")){
             return ResponseUtils.errorMsg("验证码已经超时,请重新发送");
@@ -130,7 +131,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
         if(!validateCode.equals(userRequest.getCode())){
             return ResponseUtils.errorMsg("验证码错误!");
-        }*/
+        }
 
         if(StringUtils.isEmptyStr(userRequest.getPassword())){
             return ResponseUtils.errorMsg("密码不能为空");
@@ -150,7 +151,8 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
         FrontUser  u = new FrontUser();
         u.setId(IdWorker.getId());
-        u.setStatus("1");
+        u.setStatus(DtoConstants.STATUS_NORMAL);
+        u.setIsDeleted(DtoConstants.IS_DELETE_NO);
         u.setPhone(userRequest.getPhone());
         u.setName(userRequest.getName());
         u.setPassword(userRequest.getPassword());
@@ -193,13 +195,15 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
             return ResponseUtils.errorMsg("用户不存在");
         }
 
+        if (users.get(0).getStatus().equals("2")) {
+            return ResponseUtils.errorMsg("该账号已被冻结,请联系管理员！");
+        }
+
         if (!users.get(0).getPassword().equals(frontUser.getPassword())) {
             return ResponseUtils.errorMsg("密码错误");
         }
 
-        if (users.get(0).getStatus().equals("2")) {
-            return ResponseUtils.errorMsg("该账号已被冻结,请联系管理员！");
-        }
+
 
 //        HashMap<String, String> map = new HashMap<>();
 //        map.put("id",users.get(0).getId());

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.snail.web.modules.advertise.mapper.AdvertisePositionMapper">
+
+    <delete id="deleteRecord">
+        update advertise_position set is_deleted = 1  where id = #{id}
+    </delete>
+
+    <select id="count" resultType="java.lang.Integer">
+            select count(1) from `advertise_position` ap
+            where 1=1 and  is_deleted != 1
+        <if test="name != null">
+            and instr(ap.name,#{name}) > 0
+        </if>
+        <if test="code != null">
+            and instr(ap.code,#{code}) > 0
+        </if>
+        <if test="status != null">
+            and ap.status = #{status}
+        </if>
+
+    </select>
+
+
+    <select id="page" resultType="com.snail.web.modules.advertise.dto.entity.AdvertisePosition">
+        select
+        ap.id,
+        ap.desc,
+        ap.name,
+        ap.row,
+        ap.column,
+        ap.status,
+        ap.code,
+        ap.created_time as createdTime,
+        ap.updated_time as updatedTime,
+        ap.created_by as createdBy,
+        ap.updated_by as updatedBy,
+        ap.is_deleted  as isDeleted
+        from `advertise_position` ap
+        where 1=1 and  is_deleted != 1
+        <if test="name != null">
+            and instr(ap.name,#{name}) > 0
+        </if>
+        <if test="code != null">
+            and instr(ap.code,#{code}) > 0
+        </if>
+        <if test="status != null">
+            and ap.status = #{status}
+        </if>
+        limit #{start},#{pageSize}
+    </select>
+</mapper>

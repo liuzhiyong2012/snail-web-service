@@ -6,4 +6,6 @@ public class UserConstants {
     public final static String REDIS_REGISTER_PREFIX = "redis_register_reefix";
     public final static String REDIS_RESET_PASS_PREFIX = "redis_reset_pass_prefix";
 
+    public final static int VALIDATE_EXPIRE_TIME = 120;
+
 }
