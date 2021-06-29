@@ -3,6 +3,7 @@ package com.snail.web.modules.article.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.snail.web.constants.DtoConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.article.dto.entity.ArticleType;
@@ -44,11 +45,12 @@ public class IArticleTypeService extends ServiceImpl<ArticleTypeMapper, ArticleT
 		u.setId(IdWorker.getId());
 		u.setName(articleType.getName());
 		u.setCode(articleType.getCode());
+		u.setOrderNumber(articleType.getOrderNumber());
 		u.setDesc(articleType.getDesc());
 		u.setStatus(articleType.getStatus());
 		u.setLevel(articleType.getLevel());
 		u.setParentId(articleType.getParentId());
-		u.setIsDeleted("0");
+		u.setIsDeleted(DtoConstants.IS_DELETE_NO);
 
 		u.setType(articleType.getType());
 		u.setParam(articleType.getParam());

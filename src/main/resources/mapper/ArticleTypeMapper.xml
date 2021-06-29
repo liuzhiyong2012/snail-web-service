@@ -40,7 +40,7 @@
     </select>
 
     <select id="page" resultType="com.snail.web.modules.article.dto.entity.ArticleType">
-        select atype.id, atype.name,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,
+        select atype.id, atype.name, atype.order_number as orderNumber,atype.code,atype.status,atype.desc,atype.type,atype.param,atype.level,
         atype.parent_id as parentId,
         patype.code as parentCode,
         patype.name as parentName,
@@ -75,7 +75,7 @@
         <if test=" parentType != null">
             and patype.type = #{parentType}
         </if>
-        order by patype.name asc, atype.name asc
+        order by atype.order_number desc,patype.name asc, atype.name asc
         limit #{start},#{pageSize}
     </select>
     <select id="getArticleType" resultType="com.snail.web.modules.article.dto.entity.ArticleType">

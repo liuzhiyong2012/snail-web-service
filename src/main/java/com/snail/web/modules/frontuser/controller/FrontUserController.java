@@ -60,8 +60,10 @@ public class FrontUserController {
         String flag= frontUserRequest.getFlag();
         if("register".equals(flag)){
             redisKey = UserConstants.REDIS_REGISTER_PREFIX + phone;
-        }else{
+        }else if("forgetPassword".equals(flag)){
             redisKey = UserConstants.REDIS_RESET_PASS_PREFIX + phone;
+        }else{
+            return ResponseUtils.errorMsg("验证码获取失败!");
         }
         String code = (int) ((Math.random() * 9 + 1) * 100000) + "";
         redisTemplate.opsForValue().set(redisKey,code,UserConstants.VALIDATE_EXPIRE_TIME , TimeUnit.SECONDS);

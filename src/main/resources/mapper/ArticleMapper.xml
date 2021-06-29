@@ -84,6 +84,9 @@
         atl.summary,
         fu.name as username,
         atl.created_by as createdBy,
+        atl.created_time as createdTime,
+        atl.updated_by as updatedBy,
+        atl.updated_time as updatedTime,
         atl.content as content,
         atl.content_text as contentText
         from `ms_article` atl

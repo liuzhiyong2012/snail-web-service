@@ -72,7 +72,7 @@ public class ISpiderService  implements SpiderService {
                 inserEntity.setSource(DtoConstants.SOURCE_SPIDER);
                 inserEntity.setParam(null);
                 inserEntity.setType(null);
-                inserEntity.setStatus(ArticleConstant.ARTICLCE_AUDIT_SUCCESS);
+                inserEntity.setStatus(DtoConstants.STATUS_NORMAL);
                 inserEntity.setCode(secondTypeCode);
                 inserEntity.setParentId(firstArticleType.getId());
                 inserEntity.setCreatedBy(UserConstants.ADMIN_USER_ID);

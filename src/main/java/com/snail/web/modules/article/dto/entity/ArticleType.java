@@ -45,6 +45,9 @@ public class ArticleType extends BaseRequest {
 
 	private String source;
 
+	@TableField("order_number")
+	private int  orderNumber;
+
 
 
 	/**
