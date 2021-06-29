@@ -42,8 +42,9 @@ public class Article extends BaseRequest {
 
 	@TableField("publish_time")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@JsonSerialize(using = ToStringSerializer.class)
 	private Date publishTime;
+
+
 
 	private String summary;
 

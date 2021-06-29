@@ -12,4 +12,6 @@ public interface AdvertiseService extends IService<Advertise> {
     BaseResponse update(Advertise advertise, String userId);
 
     BaseResponse getAllUsingAdvertises(Advertise advertise, String userId);
+
+    BaseResponse createData();
 }

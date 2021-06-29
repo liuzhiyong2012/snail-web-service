@@ -4,6 +4,9 @@
     <delete id="deleteRecord">
         update advertise set is_deleted = 1  where id = #{id}
     </delete>
+    <delete id="delAll">
+        delete from advertise;
+    </delete>
 
     <select id="count" resultType="java.lang.Integer">
             select count(1) from `advertise` adv

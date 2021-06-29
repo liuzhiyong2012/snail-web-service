@@ -5,6 +5,7 @@
         update ms_article set is_deleted = 1  where id = #{id}
     </delete>
 
+
     <select id="count" resultType="java.lang.Integer">
             select count(1)
         from `ms_article` atl

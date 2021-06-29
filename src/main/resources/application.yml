@@ -17,14 +17,14 @@ spring:
   application:
     name: wistron-admin
   datasource:
-    url: jdbc:mysql://120.79.39.252:3306/snail?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.243.160.233:3306/snail?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.jdbc.Driver
     max-idle: 20
     max-wait: 30000
     min-idle: 5
     initial-size: 5
     username: root
-    password: Lzy#2719045
+    password: qwrtsqc12234!asd3#
   devtools:
     restart:
       enabled: true
@@ -34,8 +34,8 @@ spring:
       max-file-size:500Mb
 
 mybatis-plus:
-  #configuration:
-    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations:
     - classpath:mapper/*.xml
   type-aliases-package: com.snail.web.modules.*.dto.entity

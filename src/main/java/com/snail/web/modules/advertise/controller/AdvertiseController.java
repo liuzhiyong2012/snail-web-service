@@ -48,4 +48,10 @@ public class AdvertiseController {
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
         return advertiseService.getAllUsingAdvertises(advertise,userId);
     }
+
+    @PostMapping("/createData")
+    public BaseResponse createData(HttpServletRequest request){
+        String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
+        return advertiseService.createData();
+    }
 }

@@ -24,6 +24,12 @@ public class Advertise extends BaseRequest {
 
     private String content;
 
+    @TableField("row")
+    private String row;
+
+    @TableField("column")
+    private String column;
+
     @TableField("link_url")
     private String linkUrl;
 
@@ -79,6 +85,13 @@ public class Advertise extends BaseRequest {
     @TableField("publish_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date  publishTime;
+
+//    @TableField(exist = false)
+//    private String row;
+//
+//    @TableField(exist = false)
+//    private String column;
+
 
 
 }
