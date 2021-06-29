@@ -75,6 +75,7 @@
         <if test=" parentType != null">
             and patype.type = #{parentType}
         </if>
+        order by patype.name asc, atype.name asc
         limit #{start},#{pageSize}
     </select>
     <select id="getArticleType" resultType="com.snail.web.modules.article.dto.entity.ArticleType">

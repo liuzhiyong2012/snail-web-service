@@ -47,6 +47,7 @@
         <if test="status != null">
             and ap.status = #{status}
         </if>
+        order by ap.name asc, ap.code asc
         limit #{start},#{pageSize}
     </select>
 </mapper>

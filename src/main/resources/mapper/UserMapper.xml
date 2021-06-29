@@ -31,6 +31,7 @@
             or
             us.name = #{keyword})
         </if>
+        order by us.updated_time desc, us.created_time desc
         limit #{start},#{pageSize}
     </select>
 

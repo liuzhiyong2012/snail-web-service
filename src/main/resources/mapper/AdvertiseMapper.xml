@@ -37,9 +37,6 @@
 
         adv.position_id as positionId,
         adv.article_id as articleId,
-
-
-
         adp.name as positionName,
         ma.title as articleTitle,
         ma.content_text as articleContentText,
@@ -80,6 +77,7 @@
         <if test="positionId != null">
             and adv.position_id = #{positionId}
         </if>
+        order by adv.updated_time desc, adv.created_time desc
         limit #{start},#{pageSize}
     </select>
 </mapper>

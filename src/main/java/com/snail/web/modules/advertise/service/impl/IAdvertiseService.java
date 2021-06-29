@@ -14,6 +14,7 @@ import com.snail.web.modules.advertise.service.AdvertiseService;
 import com.snail.web.modules.article.mapper.ArticleTypeMapper;
 import com.snail.web.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         ArticleTypeMapper articleTypeMapper;
 
     @Autowired
+            @Qualifier("advertisePositionMapper")
     AdvertisePositionMapper advertisePositionMapper;
 
 
@@ -43,17 +45,14 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
     @Override
     public BaseResponse getAllUsingAdvertises(Advertise advertise, String userId){
         AdvertisePosition advertisePositionQuery = new AdvertisePosition();
-        advertisePositionQuery.setStatus(DtoConstants.STATUS_NORMAL);
+
         advertisePositionQuery.setPageNumber(1);
         advertisePositionQuery.setPageSize(1000);
 
-
-
         List<AdvertisePosition> advertisePositionList = advertisePositionMapper.page(advertisePositionQuery);
-
         Map<String, Map> map = new HashMap<String,Map>();
         Advertise advertiseQuery = new Advertise();
-        advertiseQuery.setStatus("1");
+        advertiseQuery.setStatus(DtoConstants.STATUS_NORMAL);
         advertiseQuery.setPageNumber(1);
         advertiseQuery.setPageSize(1000);
 
@@ -64,6 +63,7 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
             List<Advertise> advertiseList= this.baseMapper.page(advertiseQuery);
 
             Map typeMap = new HashMap<String,Object>();
+            typeMap.put("status",advertisePosition.getStatus());
             typeMap.put("row",advertisePosition.getRow());
             typeMap.put("column",advertisePosition.getColumn());
             typeMap.put("list",advertiseList);

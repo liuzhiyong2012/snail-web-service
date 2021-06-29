@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="invokeTarget != null and invokeTarget != ''">
 			AND invoke_target like concat('%', #{invokeTarget}, '%')
 		</if>
+		order by updated_time desc, created_time desc
 		limit #{start},#{pageSize}
 	</select>
 

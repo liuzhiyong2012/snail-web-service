@@ -81,7 +81,7 @@
         atl.is_deleted as isDeleted,
         atl.publish_time as publishTime,
         atl.summary,
-        fu.username as username,
+        fu.name as username,
         atl.created_by as createdBy,
         atl.content as content,
         atl.content_text as contentText
@@ -98,7 +98,7 @@
             and atl.id = #{id}
         </if>
         <if test="username != null">
-            and instr( fu.username,#{username}) > 0
+            and instr( fu.name,#{username}) > 0
         </if>
         <if test="title != null">
             and instr( atl.title,#{title}) > 0
@@ -141,10 +141,9 @@
         <if test = "createdBy != null">
             and atl.created_by = #{createdBy}
         </if>
-
-
-
+        order by atl.updated_time desc,atl.publish_time desc, atl.created_time desc
         limit #{start},#{pageSize}
+
     </select>
 
     <select id="getArticle" resultType="com.snail.web.modules.article.dto.entity.Article">
