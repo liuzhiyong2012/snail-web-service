@@ -6,6 +6,7 @@ import com.geccocrawler.gecco.pipeline.PipelineFactory;
 import com.snail.web.constants.DtoConstants;
 import com.snail.web.modules.advertise.dto.entity.Advertise;
 import com.snail.web.modules.advertise.mapper.AdvertiseMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,6 +27,7 @@ public class RyTask
     @Resource//(name="springPipelineFactory")
     private PipelineFactory springPipelineFactory;
 
+    @Autowired
     private AdvertiseMapper advertiseMapper;
 
     public void allocateTask(){
@@ -89,19 +91,43 @@ public class RyTask
 
         System.out.println("======================用户日期校验器开始工作========================");
         EntityWrapper<Advertise> wrapper = new EntityWrapper<Advertise>();
-        wrapper.eq("status", DtoConstants.STATUS_NORMAL);
+      /*  wrapper.eq("status", DtoConstants.STATUS_NORMAL);*/
         wrapper.eq("is_deleted", DtoConstants.IS_DELETE_NO);
+        wrapper.eq("is_timer", DtoConstants.IS_TIMER_YES);
 
         List<Advertise> advertiseList =  advertiseMapper.selectList(wrapper);
         Date nowTime = new Date();
+        boolean isInTime;
+
         for(Advertise advertise:advertiseList){
 
             Date endTime = advertise.getEndTime();
-            if(null!=endTime&&("".equals(endTime))&&nowTime.compareTo(endTime) > 0){
-                advertise.setStatus(DtoConstants.STATUS_PAUSE);
-                advertiseMapper.updateAllColumnById(advertise);
-                System.out.println("=================更新了一条过期记录====================");
+            Date startTime = advertise.getStartTime();
+            int a = startTime.compareTo(nowTime);
+
+            if(startTime!= null&&endTime!= null&&(startTime.compareTo(endTime) >= 0)){
+                isInTime = false;
+                System.out.println("【时间设置错误】:开始时间大于结束时间:" + advertise.getName());
+            } else if(startTime!= null&&startTime.compareTo(nowTime) > 0){
+                isInTime = false;
+
+               System.out.println("【为到期】:广告名为:" + advertise.getName());
+            }else if(endTime!= null&&endTime.compareTo(nowTime) < 0){
+                System.out.println("【过期】:广告名为:" + advertise.getName());
+                isInTime = false;
+            }else{
+                System.out.println("【上线】:广告名为:" + advertise.getName());
+                isInTime = true;
             }
+            EntityWrapper<Advertise> updateWrap = new EntityWrapper<Advertise>();
+            updateWrap.eq("id",advertise.getId());
+            if(isInTime){
+                advertise.setStatus(DtoConstants.STATUS_NORMAL);
+            }else{
+                advertise.setStatus(DtoConstants.STATUS_PAUSE);
+            }
+
+            advertiseMapper.update(advertise,updateWrap);
 
         }
 

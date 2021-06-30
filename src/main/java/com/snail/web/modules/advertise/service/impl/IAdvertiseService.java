@@ -42,6 +42,17 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
 
         @Override
         public BaseResponse insert(Advertise advertise, String userId) {
+
+            if(advertise.getStatus().equals(DtoConstants.STATUS_NORMAL)){
+                disActiveAdvertise(advertise);
+                //自动下架激活状态的广告。
+
+               /* boolean isExistActive = checkIsExistActive(advertise,true);
+
+                if(isExistActive){
+                    return ResponseUtils.errorMsg("该位置上已配置激活状态的广告");
+                }*/
+            }
         advertise.setId(IdWorker.getId());
         advertise.setIsDeleted("0");
         advertise.setUpdatedTime(new Date());
@@ -49,6 +60,55 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         this.baseMapper.insert(advertise);
         return ResponseUtils.success();
     }
+
+    public void  disActiveAdvertise(Advertise advertise){
+
+
+        advertiseMapper.batchUpdateAdvertise(advertise);
+
+
+
+    }
+
+
+    public boolean checkIsExistActive(Advertise advertise,boolean isAdd){
+        /*EntityWrapper<Advertise> positionEntity = new EntityWrapper<Advertise>();
+
+        positionEntity.eq("position_id",advertise.getPositionId());
+        positionEntity.eq("row",advertise.getRow() + "");
+        positionEntity.eq("column",advertise.getColumn() + "");*/
+        Advertise advertiseQuery = new Advertise();
+        advertiseQuery.setPageNumber(1);
+        advertiseQuery.setPageSize(1000);
+        advertiseQuery.setPositionId(advertise.getPositionId());
+        advertiseQuery.setRow(advertise.getRow());
+        advertiseQuery.setColumn(advertise.getColumn());
+
+        List<Advertise> advertiseList = advertiseMapper.page(advertiseQuery);
+
+
+        //如果是更新则需要判断查出来的这条记录是不是自己
+        if(advertiseList.size() == 0){
+            return false;
+        }else if(advertiseList.size() == 1){
+            {
+                if(isAdd){
+                    return  true;
+                }else{
+                    Advertise existAdvertise = advertiseList.get(0);
+                    if(existAdvertise.getId().longValue()== advertise.getId().longValue()){
+                        return  false;
+                    }else{
+                        return true;
+                    }
+                }
+            }
+
+        }else{
+            return true;
+        }
+    }
+
 
     @Override
     public BaseResponse getAllUsingAdvertises(Advertise advertise, String userId){
@@ -106,14 +166,15 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
 
                         Advertise advertise = new Advertise();
                         advertise.setId(IdWorker.getId());
-                        advertise.setRow((i + 1)+ "");
-                        advertise.setColumn((j + 1) + "");
+                        advertise.setRow((i + 1));
+                        advertise.setColumn((j + 1));
                         advertise.setName(advertisePosition.getName() +  "_" +  (i + 1) + "" + (j + 1));
                         advertise.setStartTime(new Date());
                         advertise.setEndTime(new Date());
                         advertise.setPositionId(advertisePosition.getId());
                         advertise.setArticleId(article.getId());
                         advertise.setContent(null);
+                        advertise.setIsTimer("2");
                         advertise.setLinkUrl(null);
                         advertise.setType("2");
                         advertise.setCreatedBy(UserConstants.ADMIN_USER_ID);
@@ -164,6 +225,15 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
 			err = "名称已存在";
 			return ResponseUtils.errorMsg(err);
 		}*/
+            if(advertise.getStatus().equals(DtoConstants.STATUS_NORMAL)){
+                disActiveAdvertise(advertise);
+
+               /* boolean isExistActive = checkIsExistActive(advertise,false);
+                if(isExistActive){
+                    return ResponseUtils.errorMsg("该位置上已配置激活状态的广告");
+                }*/
+            }
+
         EntityWrapper<Advertise> wrapper = new EntityWrapper<Advertise>();
 
         wrapper.eq("id",advertise.getId());
@@ -171,6 +241,7 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         this.baseMapper.update(advertise,wrapper);
         return ResponseUtils.success();
     }
+
 
 
 }

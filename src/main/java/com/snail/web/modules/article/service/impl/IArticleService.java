@@ -56,10 +56,7 @@ public class IArticleService extends ServiceImpl<ArticleMapper, Article> impleme
         //getSetting
 
         List<Map> list = (List) JSON.parse(sensitiveWords);
-        /*System.out.println("这个是用JSON类来解析JSON字符串!!!");
-                for (Object map : maps.entrySet()){
-                         System.out.println(((Map.Entry)map).getKey()+"     " + ((Map.Entry)map).getValue());
-                     }*/
+
         for(Article articleRes:reponses){
             String content = articleRes.getContent();
             String title = articleRes.getTitle();
@@ -68,6 +65,8 @@ public class IArticleService extends ServiceImpl<ArticleMapper, Article> impleme
                 Map paramItem = list.get(i);
                 String words = (String) paramItem.get("name");
                 title = title.replaceAll(words,"***");
+                content = content.replaceAll(words,"***");
+
             }
             articleRes.setTitle(title);
             articleRes.setContent(content);

@@ -34,8 +34,8 @@ spring:
       max-file-size:500Mb
 
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #configuration:
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations:
     - classpath:mapper/*.xml
   type-aliases-package: com.snail.web.modules.*.dto.entity

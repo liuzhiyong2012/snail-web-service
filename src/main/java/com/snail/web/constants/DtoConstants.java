@@ -4,6 +4,9 @@ public class DtoConstants {
     public final static String STATUS_NORMAL = "1";
     public final static String STATUS_PAUSE = "2";
 
+    public final static String IS_TIMER_YES = "1";
+    public final static String IS_TIMER_NO = "2";
+
     public final static String IS_DELETE_YES = "1";
     public final static String IS_DELETE_NO = "0";
 

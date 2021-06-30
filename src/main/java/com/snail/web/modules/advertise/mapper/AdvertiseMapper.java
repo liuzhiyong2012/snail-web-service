@@ -16,4 +16,7 @@ public interface AdvertiseMapper extends BaseMapper<Advertise> {
 
     void delAll();
 
+
+    void batchUpdateAdvertise(Advertise advertise);
+
 }
