@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Mei on 2019/7/22.
@@ -40,6 +41,10 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
     @Autowired
     private FrontUserService frontUserService;
+
+/*
+    @Autowired
+    private RedisUtils redisUtils;*/
 
 
 
@@ -113,6 +118,36 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         u.setUpdatedTime(new Date());
         this.baseMapper.update(u,wrapper);
         return ResponseUtils.success();
+    }
+
+    @Override
+    public BaseResponse getUserInfoByToken(String token) {
+        String userIdStr = (String)redisTemplate.opsForValue().get(UserConstants.REDIS_TOKEN_PREFIX + token);
+        if(userIdStr == null||userIdStr.equals("")){
+            return ResponseUtils.errorMsg("用户登录令牌已过期");
+        }
+        Long userId = Long.parseLong(userIdStr);
+
+        EntityWrapper<FrontUser>  userWrap =  new EntityWrapper<FrontUser>();
+        userWrap.eq("id",userId);
+        FrontUser fonrUser = new FrontUser();
+        fonrUser.setId(userId);
+
+        FrontUser loginUser = this.baseMapper.selectOne(fonrUser);
+        Map<String,Object> map = new HashMap<>();
+
+//        request.setAttribute(BaseConstant.FRONT_USER_KEY,map);
+//        SessionUtils.setFrontSession(request,map);
+
+        map.put("token",token);
+        map.put("userName",loginUser.getName());
+        map.put("userId",loginUser.getId() + "");
+        map.put("roleType",loginUser.getRoleType());
+        map.put("userInfo",loginUser);
+        String redisKey = UserConstants.REDIS_TOKEN_PREFIX + token;
+        String code = loginUser.getId() + "";
+        redisTemplate.opsForValue().set(redisKey, code, UserConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+        return ResponseUtils.convert(map);
     }
 
     @Override
@@ -228,8 +263,9 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         map.put("userId",loginUser.getId() + "");
         map.put("roleType",loginUser.getRoleType());
         map.put("userInfo",loginUser);
-
-//        RedisUtils.saveAdminToken(redisTemplate, token,users.get(0).getId());
+        String redisKey = UserConstants.REDIS_TOKEN_PREFIX + token;
+        String code = loginUser.getId() + "";
+        redisTemplate.opsForValue().set(redisKey, code, UserConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return ResponseUtils.convert(map);
     }
 

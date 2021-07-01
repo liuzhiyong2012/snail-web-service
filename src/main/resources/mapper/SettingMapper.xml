@@ -7,6 +7,9 @@
     <update id="updateSetting">
         update setting set content = #{content},
          flag = #{flag},
+         seo_keywords = #{seoKeywords},
+         seo_description = #{seoDescription},
+         flag = #{flag},
          warning_text = #{warningText},
          logo_text = #{logoText},
          keywords = #{keywords},
@@ -22,6 +25,8 @@
         select id,
         content,
         flag,
+        seo_keywords as seoKeywords,
+        seo_description as seoDescription,
         warning_text as warningText,
         logo_text as logoText,
         keywords,

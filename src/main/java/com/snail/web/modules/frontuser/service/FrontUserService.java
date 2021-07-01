@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Mei on 2019/7/22.
  */
 public interface FrontUserService extends IService<FrontUser> {
+
+    public BaseResponse getUserInfoByToken(String token);
+
     public BaseResponse insert(FrontUserRequest frontUserRequest, String userId);
 
     public BaseResponse login(FrontUser frontUser, HttpServletRequest request) ;

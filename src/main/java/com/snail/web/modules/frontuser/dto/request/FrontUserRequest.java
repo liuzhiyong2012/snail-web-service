@@ -13,6 +13,7 @@ public class FrontUserRequest extends BaseRequest {
 //    private String id;
     private String username;
     private String password;
+    private String token;
     private String name;
     private String phone;
     private String flag;

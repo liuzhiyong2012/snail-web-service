@@ -9,7 +9,6 @@ import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.frontuser.dto.entity.FrontUser;
 import com.snail.web.modules.frontuser.dto.request.FrontUserRequest;
 import com.snail.web.modules.frontuser.service.FrontUserService;
-import com.snail.web.utils.AliyunSmsUtils;
 import com.snail.web.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -53,6 +52,15 @@ public class FrontUserController {
     }
 
 
+    @PostMapping("/getUserInfoByToken")
+    public BaseResponse getUserInfoByToken(@RequestBody FrontUserRequest frontUserRequest) {
+
+        return frontUserService.getUserInfoByToken(frontUserRequest.getToken());
+
+
+    }
+
+
     @PostMapping("/getValidateCode")
     public BaseResponse getValidateCode(@RequestBody FrontUserRequest frontUserRequest) {
         String redisKey = "";
@@ -66,9 +74,9 @@ public class FrontUserController {
             return ResponseUtils.errorMsg("验证码获取失败!");
         }
         String code = (int) ((Math.random() * 9 + 1) * 100000) + "";
-        redisTemplate.opsForValue().set(redisKey,code,UserConstants.VALIDATE_EXPIRE_TIME , TimeUnit.SECONDS);
-        AliyunSmsUtils smsUtil = new AliyunSmsUtils();
-        smsUtil.sendMessage(phone,code);
+        redisTemplate.opsForValue().set(redisKey,code,UserConstants.TOKEN_EXPIRE_TIME , TimeUnit.SECONDS);
+       /* AliyunSmsUtils smsUtil = new AliyunSmsUtils();
+        smsUtil.sendMessage(phone,code);*/
         return ResponseUtils.success();
     }
 

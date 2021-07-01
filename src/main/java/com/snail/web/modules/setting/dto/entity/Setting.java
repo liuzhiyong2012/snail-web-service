@@ -27,6 +27,14 @@ public class Setting extends BaseEntity {
 
 	private String keywords;
 
+	@TableField("seo_keywords")
+	private String seoKeywords;
+
+	@TableField("seo_description")
+	private String seoDescription;
+
+
+
 
 	private String protocal;
 
