@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.advertise.dto.entity.Advertise;
+import com.snail.web.modules.advertise.dto.entity.AdvertisePosition;
 
 public interface AdvertiseService extends IService<Advertise> {
     BaseResponse insert(Advertise advertise, String userId);
@@ -12,6 +13,10 @@ public interface AdvertiseService extends IService<Advertise> {
     BaseResponse update(Advertise advertise, String userId);
 
     BaseResponse getAllUsingAdvertises(Advertise advertise, String userId);
+
+   BaseResponse getAdvertiseListByPositionCode(AdvertisePosition advertisePosition);
+
+
 
     BaseResponse createData();
 }

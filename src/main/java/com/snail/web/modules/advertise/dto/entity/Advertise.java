@@ -51,6 +51,10 @@ public class Advertise extends BaseRequest {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long positionId;
 
+    @TableField(exist=false)
+    private String positionCode;
+
+
 
     @TableField("start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

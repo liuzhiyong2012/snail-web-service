@@ -100,6 +100,9 @@
         <if test="positionId != null">
             and adv.position_id = #{positionId}
         </if>
+        <if test="positionCode != null">
+            and adp.code = #{positionCode}
+        </if>
         order by adp.name asc, adv.row asc, adv.column asc,adv.status asc
         limit #{start},#{pageSize}
     </select>

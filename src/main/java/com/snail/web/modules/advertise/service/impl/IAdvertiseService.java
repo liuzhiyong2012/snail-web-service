@@ -36,7 +36,7 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
 
 
     @Autowired
-            @Qualifier("advertisePositionMapper")
+    @Qualifier("advertisePositionMapper")
     AdvertisePositionMapper advertisePositionMapper;
 
 
@@ -109,6 +109,26 @@ public class IAdvertiseService extends ServiceImpl<AdvertiseMapper, Advertise> i
         }
     }
 
+
+    @Override
+    public BaseResponse getAdvertiseListByPositionCode(AdvertisePosition advertisePosition){
+
+
+        AdvertisePosition postion = advertisePositionMapper.selectOne(advertisePosition);
+        Advertise advertiseQuery = new Advertise();
+        advertiseQuery.setStatus(DtoConstants.STATUS_NORMAL);
+        advertiseQuery.setPositionId(postion.getId());
+        advertiseQuery.setPageSize(1);
+        advertiseQuery.setPageSize(1000);
+         List<Advertise>  advertiseList = advertiseMapper.page(advertiseQuery);
+         HashMap map = new HashMap();
+         map.put("row",postion.getRow());
+         map.put("column",postion.getColumn());
+         map.put("status",postion.getStatus());
+         map.put("list",advertiseList);
+
+        return ResponseUtils.convert(map);
+    }
 
     @Override
     public BaseResponse getAllUsingAdvertises(Advertise advertise, String userId){

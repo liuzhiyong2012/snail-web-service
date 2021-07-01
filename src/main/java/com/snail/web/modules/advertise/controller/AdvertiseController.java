@@ -3,6 +3,7 @@ package com.snail.web.modules.advertise.controller;
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.modules.advertise.dto.entity.Advertise;
+import com.snail.web.modules.advertise.dto.entity.AdvertisePosition;
 import com.snail.web.modules.advertise.service.AdvertiseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,5 +54,10 @@ public class AdvertiseController {
     public BaseResponse createData(HttpServletRequest request){
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
         return advertiseService.createData();
+    }
+
+    @PostMapping("/getAdvertiseListByPositionCode")
+    public BaseResponse getAdvertiseListByPositionCode(@RequestBody AdvertisePosition advertisePosition, HttpServletRequest request){
+        return advertiseService.getAdvertiseListByPositionCode(advertisePosition);
     }
 }
