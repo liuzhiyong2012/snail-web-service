@@ -63,7 +63,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         EntityWrapper<FrontUser> wrapper = new EntityWrapper<FrontUser>();
         wrapper.eq("id",frontUserRequest.getId());
         FrontUser u = new FrontUser();
-        u.setUsername(frontUserRequest.getUsername());
+        u.setName(frontUserRequest.getName());
         if(!StringUtils.isEmptyStr(frontUserRequest.getPassword())){
             u.setPassword(frontUserRequest.getPassword());
         }
