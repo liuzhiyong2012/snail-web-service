@@ -17,11 +17,6 @@ import lombok.EqualsAndHashCode;
 @TableName("ms_article_type")
 public class ArticleType extends BaseRequest {
 
-/*
-	@TableId
-	@JsonSerialize(using = ToStringSerializer.class)
-	private Long id;
-*/
 
 	/**
 	 * 名称

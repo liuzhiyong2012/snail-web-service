@@ -3,6 +3,7 @@ package com.snail.web.modules.article.controller;
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.modules.article.dto.entity.Article;
+import com.snail.web.modules.article.dto.entity.ArticleType;
 import com.snail.web.modules.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,4 +43,11 @@ public class ArticleController {
         String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
         return articleService.page( article,userId);
     }
+
+    @PostMapping("/getNewlatestArticle")
+    public BaseResponse getNewlatestArticle(@RequestBody ArticleType articleType, HttpServletRequest request){
+        String userId = request.getParameter(BaseConstant.FRONT_USER_KEY);
+        return articleService.getNewlatestArticle(articleType,userId);
+    }
+
 }

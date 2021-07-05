@@ -21,56 +21,11 @@ public class AliSmsCodeUtil {
 
 
 	public static String sendVertifySms(String phone ,String msg){
-		DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4GBQ8PuKkkVV7r3ouZb6", "aid1amHEOj9q5ikmILBOpU8uIVQ5ga");
-	    IAcsClient client = new DefaultAcsClient(profile);
 
-	    CommonRequest request = new CommonRequest();
-	    request.setMethod(MethodType.POST);
-	    request.setDomain("dysmsapi.aliyuncs.com");
-	    request.setVersion("2017-05-25");
-	    request.setAction("SendSms");
-	    request.putQueryParameter("RegionId", "cn-hangzhou");
-	    request.putQueryParameter("PhoneNumbers", phone);
-	    request.putQueryParameter("SignName", "捷算");
-	    request.putQueryParameter("TemplateCode", "SMS_189555884");
-	    request.putQueryParameter("TemplateParam", "{\"code\":\""+msg+"\"}");
-
-	    try {
-	        CommonResponse response = client.getCommonResponse(request);
-	        return response.getData();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return "error";
-	    }
 	}
 
     public static String sendSms(String phone,String msg) {
-    	DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4GBQ8PuKkkVV7r3ouZb6", "aid1amHEOj9q5ikmILBOpU8uIVQ5ga");
-	    IAcsClient client = new DefaultAcsClient(profile);
-
-	    CommonRequest request = new CommonRequest();
-	    request.setMethod(MethodType.POST);
-	    request.setDomain("dysmsapi.aliyuncs.com");
-	    request.setVersion("2017-05-25");
-	    request.setAction("SendSms");
-	    request.putQueryParameter("RegionId", "cn-hangzhou");
-	    request.putQueryParameter("PhoneNumbers", phone);
-	    request.putQueryParameter("SignName", "捷算");
-	    request.putQueryParameter("TemplateCode", msg.split("[|]")[0]);
-	    request.putQueryParameter("TemplateParam", msg.split("[|]")[1]);
-	    //SMS_190270503
-	    //您收到新的审批需要审核，请尽快处理！
-
-	    try {
-	        CommonResponse response = client.getCommonResponse(request);
-			return response.getData();
-	    } catch (ServerException e) {
-	        e.printStackTrace();
-	        return "error";
-	    } catch (ClientException e) {
-	        e.printStackTrace();
-	        return "error";
-	    }
+    	
     }
 
     public static void main(String[] args) {

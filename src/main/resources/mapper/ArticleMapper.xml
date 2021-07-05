@@ -47,9 +47,6 @@
         <if test = "status != null">
             and atl.status = #{status}
         </if>
-
-
-
         <if test = "firstTypeName != null">
             and instr(mat.name,#{firstTypeName})
         </if>

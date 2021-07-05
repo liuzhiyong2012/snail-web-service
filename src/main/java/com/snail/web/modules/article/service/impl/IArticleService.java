@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.snail.web.constants.DtoConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.article.dto.entity.Article;
+import com.snail.web.modules.article.dto.entity.ArticleType;
 import com.snail.web.modules.article.mapper.ArticleMapper;
+import com.snail.web.modules.article.mapper.ArticleTypeMapper;
 import com.snail.web.modules.article.service.ArticleService;
 import com.snail.web.modules.setting.dto.entity.Setting;
 import com.snail.web.modules.setting.mapper.SettingMapper;
@@ -15,14 +18,15 @@ import com.snail.web.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class IArticleService extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     @Autowired
     SettingMapper settingMapper;
+
+    @Autowired
+    ArticleTypeMapper articleTypeMapper;
 
     @Override
     public BaseResponse insert(Article article, String userId) {
@@ -101,4 +105,38 @@ public class IArticleService extends ServiceImpl<ArticleMapper, Article> impleme
     }
 
 
+
+
+    @Override
+    public BaseResponse getNewlatestArticle(ArticleType articleType, String userId) {
+        /*EntityWrapper<ArticleType> wrapper = new EntityWrapper<ArticleType>();
+        wrapper.eq("code",articleType.getCode());*/
+
+        ArticleType articleTypeQuery = new ArticleType();
+        articleTypeQuery.setPageNumber(1);
+        articleTypeQuery.setPageSize(1000);
+        articleTypeQuery.setLevel("1");
+        articleTypeQuery.setStatus(DtoConstants.STATUS_NORMAL);
+
+        List<ArticleType> articleTypeList = articleTypeMapper.page(articleTypeQuery);
+
+        List retList = new ArrayList();
+        for(ArticleType retArticleType:articleTypeList){
+            long typeId = retArticleType.getId();
+            Article articleQuery = new Article();
+            articleQuery.setPageNumber(1);
+            articleQuery.setPageSize(21);
+            articleQuery.setFirstTypeId(typeId);
+
+            Map map = new HashMap();
+            List<Article> articleList = this.baseMapper.page(articleQuery);
+
+            map.put("code",retArticleType.getCode());
+            map.put("name",retArticleType.getName());
+            map.put("list",articleList);
+            retList.add(map);
+        }
+
+        return ResponseUtils.convert(retList);
+    }
 }
