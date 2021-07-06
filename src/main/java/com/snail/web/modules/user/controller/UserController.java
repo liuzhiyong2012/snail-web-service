@@ -64,8 +64,7 @@ public class UserController {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return userService.update(userRequest, userId);
     }*/
-
-    @PostMapping("/resetPassWord")
+    @PostMapping("/resetPassword")
     public BaseResponse resetPassWord(@RequestBody UserRequest userRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         BaseResponse insert = userService.resetPassword(userRequest,request);
