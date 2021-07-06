@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.snail.web.modules.user.mapper.UserMapper">
+    <delete id="deleteRecord">
+        update user set is_deleted = 1  where id = #{id}
+    </delete>
 
     <select id="count" resultType="java.lang.Integer">
-        select count(1) from `user`
-        where 1=1
+        select count(1) from `user` us
+        where 1=1 and is_deleted != 1
 
-        <if test="phone != null">
-            and phone !=#{phone}
+        <if test="username != null">
+            and instr( us.username,#{username}) > 0
+        </if>
+        <if test="name != null">
+            and instr( us.name,#{name}) > 0
+        </if>
+        <if test="status != null">
+            and us.status = #{status}
         </if>
     </select>
 
     <select id="page" resultType="com.snail.web.modules.user.dto.response.UserReponse">
-        select us.id, us.username,us.role_id as roleId, ur.name as roleName,us.name, us.created_time as createdTime, us.created_by as createdBy, us.updated_time as updatedTime, us.updated_by as updatedBy,
+        select us.id, us.username,us.password,us.status,us.role_id as roleId, ur.name as roleName,us.name, us.created_time as createdTime, us.created_by as createdBy, us.updated_time as updatedTime, us.updated_by as updatedBy,
         cu.username as createdUser, uu.username as updatedUser
          from `user` us
          left join user_role ur on ur.id=us.role_id
          left JOIN `user` cu on cu.id=us.created_by
          LEFT JOIN `user` uu on uu.id=us.updated_by
-         where 1=1
-         <if test="username != null">
-             and ur.username=#{username}
-         </if>
-        <if test="id != null">
-            and id !=#{id}
+        where 1=1 and us.is_deleted != 1
+        <if test="username != null">
+            and instr( us.username,#{username}) > 0
         </if>
-        <if test = "keyword != null">
-            and (
-            us.username=#{keyword}
-            or
-            us.name = #{keyword})
+        <if test="name != null">
+            and instr( us.name,#{name}) > 0
+        </if>
+        <if test="status != null">
+            and us.status = #{status}
         </if>
         order by us.updated_time desc, us.created_time desc
         limit #{start},#{pageSize}

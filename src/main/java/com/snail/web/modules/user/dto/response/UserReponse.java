@@ -15,6 +15,8 @@ public class UserReponse extends User {
        private  String token;
        private  String time;
 
+       private  String status;
+
        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
        private Date updatedTime;
 }

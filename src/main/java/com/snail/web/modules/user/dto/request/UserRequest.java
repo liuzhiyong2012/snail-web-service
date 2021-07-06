@@ -13,6 +13,9 @@ import org.apache.commons.lang.StringUtils;
 public class UserRequest extends BaseRequest {
     private String username;
     private String password;
+    private String newPassword;
+
+    private String status;
 //    private String roleId;
 //    private String id;
     private String name;

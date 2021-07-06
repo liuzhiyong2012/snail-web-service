@@ -1,7 +1,6 @@
 package com.snail.web.modules.user.controller;
 
 
-import com.snail.web.common.anno.Auth;
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
@@ -28,35 +27,50 @@ public class UserController {
 
     @PostMapping("/login")
     public BaseResponse login(@RequestBody User user) {
-
         return userService.login(user);
     }
 
-    @Auth
+   /* @Auth*/
     @PostMapping("/page")
     public PageBaseResponse page(@RequestBody UserRequest userRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return userService.page(userRequest, userId);
     }
 
-    @Auth
+   /* @Auth*/
     @PostMapping("/insert")
     public BaseResponse insert(@RequestBody UserRequest userRequest, HttpServletRequest request){
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return userService.insert(userRequest, userId);
     }
 
-    @Auth
+   /* @Auth*/
     @PostMapping("/update")
     public BaseResponse update(@RequestBody UserRequest userRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
-        return userService.update(userRequest, userId);
+        return userService.update(userRequest, request);
     }
 
-    @Auth
+   /* @Auth*/
     @PostMapping("/deleteById")
     public BaseResponse deleteById(@RequestBody UserRequest userRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
         return userService.deleteById(userRequest, userId);
     }
+
+   /* @Auth*/
+   /* @PostMapping("/getAdminUserInfo")
+    public BaseResponse getAdminUserInfo(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+        String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
+        return userService.update(userRequest, userId);
+    }*/
+
+    @PostMapping("/resetPassWord")
+    public BaseResponse resetPassWord(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+        String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
+        BaseResponse insert = userService.resetPassword(userRequest,request);
+        return insert;
+    }
 }
+
+

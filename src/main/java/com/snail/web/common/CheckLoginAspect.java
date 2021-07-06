@@ -50,7 +50,7 @@ public class CheckLoginAspect implements HandlerInterceptor {
 //            String token = request.getHeader("OCEAN_TOKEN");
 //            String userId = RedisUtils.getUserId(redisTemplate, token);
 //            System.out.println("token: " + token + ", userId:" + userId);
-            String token = request.getHeader("TOKEN");
+            String token = request.getHeader("token");
             String prefix = request.getHeader("prefix");
             String timestamp = request.getHeader("timestamp");
             String signature= request.getHeader("signature");

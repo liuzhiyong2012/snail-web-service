@@ -4,6 +4,8 @@ package com.snail.web.modules.user.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.snail.web.constants.DtoConstants;
+import com.snail.web.constants.UserConstants;
 import com.snail.web.dto.BaseResponse;
 import com.snail.web.dto.PageBaseResponse;
 import com.snail.web.modules.user.dto.entity.User;
@@ -18,8 +20,10 @@ import com.snail.web.utils.RequestUtils;
 import com.snail.web.utils.ResponseUtils;
 import com.snail.web.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -35,8 +39,9 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
     @Autowired
     private UserRoleService userRoleService;
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Autowired
     private UserService userService;
     @Override
@@ -75,7 +80,7 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
     }
 
     @Override
-    public BaseResponse update(UserRequest userRequest, String userId)  {
+    public BaseResponse update(UserRequest userRequest, HttpServletRequest request)  {
         String err = userRequest.validDate();
         if(!StringUtils.isEmptyStr(err)){
             return ResponseUtils.errorMsg(err);
@@ -84,11 +89,26 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
             err="id不能为空";
             return ResponseUtils.errorMsg(err);
         }*/
-        Integer count = this.baseMapper.count(userRequest);
-        if(count>0){
+        UserRequest userQuery = new UserRequest();
+        userQuery.setPageNumber(1);
+        userQuery.setPageSize(1000);
+        userQuery.setUsername(userRequest.getUsername());
+        List<UserReponse> userReponses = this.baseMapper.page(userQuery);
+
+        Integer count = userReponses.size();
+
+
+
+        if(count ==  1){
+            if(userRequest.getId().longValue() != userReponses.get(0).getId().longValue()){
+                err = "用户名已存在";
+                return ResponseUtils.errorMsg(err);
+            }
+        }else if(count > 1){
             err = "用户名已存在";
             return ResponseUtils.errorMsg(err);
         }
+
         EntityWrapper<User> wrapper = new EntityWrapper<>();
         wrapper.eq("id",userRequest.getId());
         User u = new User();
@@ -97,8 +117,9 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
             u.setPassword(userRequest.getPassword());
         }
         u.setName(userRequest.getName());
+        u.setStatus(userRequest.getStatus());
 //        u.setRoleId(userRequest.getRoleId());
-        u.setUpdatedBy(Long.parseLong(userId));
+        u.setUpdatedBy(UserConstants.ADMIN_USER_ID);
         u.setUpdatedTime(new Date());
         this.baseMapper.update(u,wrapper);
         return ResponseUtils.success();
@@ -123,10 +144,12 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
         u.setUsername(userRequest.getUsername());
         u.setName(userRequest.getName());
         u.setPassword(userRequest.getPassword());
+        u.setStatus(userRequest.getStatus());
+        u.setIsDeleted(DtoConstants.IS_DELETE_NO);
 //        u.setRoleId(userRequest.getRoleId());
-        u.setCreatedBy(Long.parseLong(userId));
+        u.setCreatedBy(UserConstants.ADMIN_USER_ID);
         u.setCreatedTime(new Date());
-        u.setUpdatedBy(Long.parseLong(userId));
+        u.setUpdatedBy(UserConstants.ADMIN_USER_ID);
         u.setUpdatedTime(new Date());
         this.baseMapper.insert(u);
         return ResponseUtils.success();
@@ -147,6 +170,10 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
             return ResponseUtils.errorMsg("用户不存在");
         }
 
+        if (users.get(0).getStatus().equals(DtoConstants.STATUS_PAUSE)) {
+            return ResponseUtils.errorMsg("改用户已被冻结,请联系管理员!");
+        }
+
         if (!users.get(0).getPassword().equals(user.getPassword())) {
             return ResponseUtils.errorMsg("密码错误");
         }
@@ -163,16 +190,16 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
         Map<String,String> map = new HashMap<>();
         map.put("token",token);
         map.put("userName",users.get(0).getName());
+
+        redisTemplate.opsForValue().set(UserConstants.ADMIN_TOKEN_PREFIX + token,users.get(0).getId());
+
 //        RedisUtils.saveAdminToken(redisTemplate, token,users.get(0).getId());
         return ResponseUtils.convert(map);
     }
 
     @Override
     public PageBaseResponse page(UserRequest request, String userId) {
-        Integer weight = userService.getRoleWeight(userId);
-        if (weight == null) {
-            return ResponseUtils.pageError("无权限");
-        }
+
         if (request.getPageNumber() == null || request.getPageSize() == null) {
             return ResponseUtils.pageError("参数缺失分页");
         }
@@ -188,13 +215,57 @@ public class IUserService extends ServiceImpl<UserMapper, User> implements UserS
     @Override
     public BaseResponse deleteById(UserRequest userRequest, String userId)  {
         String errMessage= "";
-        /*if(StringUtils.isEmptyStr(userRequest.getId())){
+        /*if(StringUtils.isEmptyStr(frontUserRequest.getId())){
             errMessage="id不能为空";
             return ResponseUtils.errorMsg(errMessage);
         }*/
-        EntityWrapper<User> wrapper = new EntityWrapper<>();
-        wrapper.eq("id",userRequest.getId());
-        this.delete(wrapper);
+
+        this.baseMapper.deleteRecord(userRequest);
+        /*EntityWrapper<FrontUser> wrapper = new EntityWrapper<>();
+        wrapper.eq("id",frontUserRequest.getId());
+        this.delete(wrapper);*/
         return ResponseUtils.success();
+    }
+
+    @Override
+    public BaseResponse resetPassword(UserRequest userRequest, HttpServletRequest request) {
+        {
+            /*String err = userRequest.validDate();
+            if(!StringUtils.isEmptyStr(err)){
+                return ResponseUtils.errorMsg(err);
+            }
+*/
+            String token =  request.getHeader("token");;
+            //校验验证码
+            String redisKey = UserConstants.ADMIN_TOKEN_PREFIX + token;
+            Long adminUserId = Long.parseLong(redisTemplate.opsForValue().get(redisKey) + "");
+
+            if(null == adminUserId){
+                return ResponseUtils.errorMsg("用户登录令牌已失效,即将跳转登录页面！");
+            }
+
+            User user = this.baseMapper.selectById(adminUserId);
+
+            String password  = user.getPassword();
+
+            if(!password.equals(userRequest.getPassword())){
+                return ResponseUtils.errorMsg("原密码输入错误,请重新输入!");
+            }
+
+            if(StringUtils.isEmptyStr(userRequest.getPassword())){
+                return ResponseUtils.errorMsg("密码不能为空");
+            }
+
+            EntityWrapper<User> wrapper = new EntityWrapper<User>();
+            wrapper.eq("id",user.getId());
+
+            User updateUser = new User();
+            updateUser.setPassword(userRequest.getNewPassword());
+            updateUser.setUpdatedBy(updateUser.getId());
+            updateUser.setUpdatedTime(new Date());
+            this.baseMapper.update(updateUser,wrapper);
+
+            return ResponseUtils.success();
+        }
     }
 }

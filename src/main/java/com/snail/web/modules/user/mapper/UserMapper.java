@@ -18,4 +18,6 @@ public interface UserMapper extends BaseMapper<User> {
     public Integer count(UserRequest userRequest);
 
     public List<UserReponse> page(UserRequest userRequest);
+
+    void  deleteRecord(UserRequest userRequest);
 }

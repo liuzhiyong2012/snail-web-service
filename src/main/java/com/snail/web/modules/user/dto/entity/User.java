@@ -35,4 +35,10 @@ public class User implements Serializable {
 	private Date updatedTime;
 	@TableField("role_id")
 	private String roleId;
+
+	@TableField("is_deleted")
+	private String isDeleted;
+
+	@TableField("status")
+	private String status;
 }
