@@ -21,6 +21,8 @@ public class ResponseUtils {
 		return convert(1000, "成功", data);
 	}
 
+	public static int CODE_MESSAGE_ERROR = 3000;
+	public static int CODE_SUCCESS = 1000;
 //	public static BaseResponse errorMsg(ErrorCodeEnum errorCodeEnum) {
 //		BaseResponse baseResponse = new BaseResponse();
 //		baseResponse.setCode(errorCodeEnum.getCode());
@@ -44,6 +46,15 @@ public class ResponseUtils {
 
 		return br;
 	}
+
+	public static BaseResponse errorMsg(int code,String message) {
+		BaseResponse br = new BaseResponse();
+		br.setCode(code);
+		br.setMessage(message);
+
+		return br;
+	}
+
 
 	public static BaseResponse nullMsg(String nullObject) {
 		BaseResponse br = new BaseResponse();

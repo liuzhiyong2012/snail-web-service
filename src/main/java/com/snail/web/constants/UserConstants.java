@@ -10,8 +10,8 @@ public class UserConstants {
     public final static String REDIS_REGISTER_PREFIX = "redis_register_reefix";
     public final static String REDIS_RESET_PASS_PREFIX = "redis_reset_pass_prefix";
 
-    public final static int VALIDATE_EXPIRE_TIME = 120;
+    public final static int VALIDATE_EXPIRE_TIME = 60 * 5;
 
-    public final static int TOKEN_EXPIRE_TIME = 60 * 60;
+    public final static int TOKEN_EXPIRE_TIME = 24 * 60 * 60;
 
 }

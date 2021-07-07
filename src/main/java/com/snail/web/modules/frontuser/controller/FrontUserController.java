@@ -1,6 +1,7 @@
 package com.snail.web.modules.frontuser.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.snail.web.common.anno.Auth;
 import com.snail.web.constants.BaseConstant;
 import com.snail.web.constants.UserConstants;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -75,10 +77,21 @@ public class FrontUserController {
             return ResponseUtils.errorMsg("验证码获取失败!");
         }
         String code = (int) ((Math.random() * 9 + 1) * 100000) + "";
-        redisTemplate.opsForValue().set(redisKey,code,UserConstants.TOKEN_EXPIRE_TIME , TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(redisKey,code,UserConstants.VALIDATE_EXPIRE_TIME , TimeUnit.SECONDS);
         AliyunSmsUtils smsUtil = new AliyunSmsUtils();
-        smsUtil.sendMessage(phone,code);
-        return ResponseUtils.success();
+        String resData = smsUtil.sendMessage(phone,code);
+
+        //System.out.println("发送短信获得resData:" + resData);
+        Map resMap = (Map) JSON.parse(resData);
+
+        if("OK".equals(resMap.get("Code"))){
+            return ResponseUtils.success();
+        }else{
+            return ResponseUtils.errorMsg(ResponseUtils.CODE_MESSAGE_ERROR,"短信发送失败：" + resMap.get("Message") );
+        }
+//        System.out.println(obj.get("Code"));
+
+
     }
 
     @PostMapping("/resetPassWord")
