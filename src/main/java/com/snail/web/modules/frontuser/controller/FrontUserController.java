@@ -110,7 +110,7 @@ public class FrontUserController {
         return insert;
     }
 
-    @Auth
+//    @Auth
     @PostMapping("/update")
     public BaseResponse update(@RequestBody FrontUserRequest frontUserRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
@@ -119,10 +119,16 @@ public class FrontUserController {
 
 
 
-    @Auth
+    /*@Auth*/
     @PostMapping("/deleteById")
     public BaseResponse deleteById(@RequestBody FrontUserRequest frontUserRequest, HttpServletRequest request) {
         String userId = (String) request.getAttribute(BaseConstant.USER_INFO);
+
         return frontUserService.deleteById(frontUserRequest, userId);
     }
+
+
+
+
+
 }

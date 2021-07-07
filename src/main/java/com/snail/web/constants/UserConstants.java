@@ -3,7 +3,7 @@ package com.snail.web.constants;
 public class UserConstants {
     public final static Long ADMIN_USER_ID = 1404302020376014842L;
 
-    public final static String REDIS_TOKEN_PREFIX = "redis_token_prefix";
+    public final static String FRONT_TOKEN_PREFIX = "redis_token_prefix";
 
     public final static String ADMIN_TOKEN_PREFIX = "admin_token_prefix";
 

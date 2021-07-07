@@ -37,4 +37,6 @@ public interface FrontUserService extends IService<FrontUser> {
     public PageBaseResponse page(FrontUserRequest frontUserRequest, String userId);
 
     public BaseResponse deleteById(FrontUserRequest frontUser, String userId);
+
+    public FrontUser getLoginUserByToken(HttpServletRequest request);
 }

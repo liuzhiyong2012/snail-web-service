@@ -22,6 +22,7 @@ public class ResponseUtils {
 	}
 
 	public static int CODE_MESSAGE_ERROR = 3000;
+	public static int CODE_TOKEN_EXPIRTE = 5000;  //用户token失效
 	public static int CODE_SUCCESS = 1000;
 //	public static BaseResponse errorMsg(ErrorCodeEnum errorCodeEnum) {
 //		BaseResponse baseResponse = new BaseResponse();

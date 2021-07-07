@@ -122,7 +122,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
 
     @Override
     public BaseResponse getUserInfoByToken(String token) {
-        String userIdStr = (String)redisTemplate.opsForValue().get(UserConstants.REDIS_TOKEN_PREFIX + token);
+        String userIdStr = (String)redisTemplate.opsForValue().get(UserConstants.FRONT_TOKEN_PREFIX + token);
         if(userIdStr == null||userIdStr.equals("")){
             return ResponseUtils.errorMsg("用户登录令牌已过期");
         }
@@ -144,7 +144,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         map.put("userId",loginUser.getId() + "");
         map.put("roleType",loginUser.getRoleType());
         map.put("userInfo",loginUser);
-        String redisKey = UserConstants.REDIS_TOKEN_PREFIX + token;
+        String redisKey = UserConstants.FRONT_TOKEN_PREFIX + token;
         String code = loginUser.getId() + "";
         redisTemplate.opsForValue().set(redisKey, code, UserConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return ResponseUtils.convert(map);
@@ -263,7 +263,7 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         map.put("userId",loginUser.getId() + "");
         map.put("roleType",loginUser.getRoleType());
         map.put("userInfo",loginUser);
-        String redisKey = UserConstants.REDIS_TOKEN_PREFIX + token;
+        String redisKey = UserConstants.FRONT_TOKEN_PREFIX + token;
         String code = loginUser.getId() + "";
         redisTemplate.opsForValue().set(redisKey, code, UserConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         return ResponseUtils.convert(map);
@@ -282,5 +282,25 @@ public class IFrontUserService extends ServiceImpl<FrontUserMapper, FrontUser> i
         wrapper.eq("id",frontUserRequest.getId());
         this.delete(wrapper);*/
         return ResponseUtils.success();
+    }
+
+
+
+    public FrontUser getLoginUserByToken(HttpServletRequest request){
+        String token =  request.getHeader("token");
+
+        if(token == null||token.equals("")){
+            return null;
+        }
+        //校验验证码
+        String redisKey = UserConstants.FRONT_TOKEN_PREFIX + token;
+        Long frontUserId = Long.parseLong(redisTemplate.opsForValue().get(redisKey) + "");
+
+        if(frontUserId == null){
+            return null;
+        }
+        FrontUser user = this.baseMapper.selectById(frontUserId);
+
+        return user;
     }
 }
